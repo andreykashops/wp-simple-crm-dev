@@ -1,0 +1,12 @@
+{
+  "name": "scrm/scrm",
+  "description": "WP Simple CRM",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Andrey Pavluk",
+      "email": "andreykashops@gmail.com"
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Project-Id-Version: WP Simple CRM\n"
+"POT-Creation-Date: 2018-03-23 14:25+0200\n"
+"PO-Revision-Date: 2018-03-23 14:25+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: wp-simple-crm.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: ru_RU\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/class-scrm-install.php:31
+msgid "AAA test"
+msgstr "Тестовый"
+
+#: includes/class-scrm-install.php:154
+msgid "View WP Simple CRM settings"
+msgstr ""
+
+#: includes/class-scrm-install.php:154
+msgid "Settings"
+msgstr ""
+
+#: includes/class-scrm-install.php:170
+msgid "View WP Simple CRM author"
+msgstr ""
+
+#: includes/class-scrm-install.php:170
+msgid "Author"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:35
+msgid "Leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:36
+msgid "Lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:37
+msgid "All leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:38
+msgctxt "Admin menu name"
+msgid "Leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:39 includes/class-scrm-post-types.php:86
+msgid "Add New"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:40
+msgid "Add new lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:41 includes/class-scrm-post-types.php:88
+msgid "Edit"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:42
+msgid "Edit lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:43
+msgid "New lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:44
+msgid "View lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:45
+msgid "View leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:46
+msgid "Search leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:47
+msgid "No leads found"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:48
+msgid "No leads found in trash"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:49
+msgid "Parent lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:50
+msgid "Lead image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:51
+msgid "Set lead image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:52
+msgid "Remove lead image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:53
+msgid "Use as lead image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:54
+msgid "Insert into lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:55
+msgid "Uploaded to this lead"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:56
+msgid "Filter leads"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:57
+msgid "Leads navigation"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:58
+msgid "Leads list"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:60
+msgid "This is where you can add new lead to your crm."
+msgstr ""
+
+#: includes/class-scrm-post-types.php:82
+msgid "Contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:83
+msgid "Contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:84
+msgid "All contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:85
+msgctxt "Admin menu name"
+msgid "Contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:87
+msgid "Add new contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:89
+msgid "Edit contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:90
+msgid "New contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:91
+msgid "View contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:92
+msgid "View contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:93
+msgid "Search contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:94
+msgid "No contacts found"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:95
+msgid "No contacts found in trash"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:96
+msgid "Parent contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:97
+msgid "Contact image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:98
+msgid "Set contact image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:99
+msgid "Remove contact image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:100
+msgid "Use as contact image"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:101
+msgid "Insert into contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:102
+msgid "Uploaded to this contact"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:103
+msgid "Filter contacts"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:104
+msgid "Contacts navigation"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:105
+msgid "Contacts list"
+msgstr ""
+
+#: includes/class-scrm-post-types.php:107
+msgid "This is where you can add new contact to your crm."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP Simple CRM"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://URI_Of_Page_Describing_Plugin_and_Updates"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A brief description of the Plugin."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "andreykashops"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://URI_Of_The_Plugin_Author"
+msgstr ""
