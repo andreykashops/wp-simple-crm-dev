@@ -21,6 +21,9 @@ class SCRM_Admin
      */
     public function includes()
     {
+        include_once( dirname( __FILE__ ) . '/scrm-admin-functions.php' );
+        include_once( dirname( __FILE__ ) . '/scrm-meta-box-functions.php' );
+        include_once( dirname( __FILE__ ) . '/class-scrm-admin-assets.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-leads-page.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-settings-page.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-menu.php' );
@@ -28,3 +31,5 @@ class SCRM_Admin
     }
 
 }
+
+return new SCRM_Admin();
