@@ -18,6 +18,8 @@ class SCRM_Admin_Post_Types
      */
     public function __construct()
     {
+        include_once( dirname( __FILE__ ) . '/class-scrm-admin-meta-boxes.php' );
+        
         // Extra post data and screen elements.
         add_filter('default_hidden_meta_boxes', array($this, 'hidden_meta_boxes'), 10, 2);
 

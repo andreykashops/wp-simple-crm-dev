@@ -1,0 +1,126 @@
+/*
+ * Created by Roman Hofman
+ * Date: 06.04.2018
+ */
+
+/*
+ * Metabox
+ */
+.inside [class*='-block-'] {
+    display: inline-table;
+}
+
+.inside [class*='-field-'] label {
+    display: inline-block;
+    width: 40%;
+    text-align: right;
+    vertical-align: baseline;
+}
+
+.inside [class*='-field-'] input {
+    display: inline-block;
+    width: 55%;
+}
+
+.inside [class*='-field-'] input[type='checkbox'] {
+    margin-bottom: 5px;
+    width: 5%;
+}
+
+.inside [class*='-field-'] select {
+    width: 55%;
+}
+
+.inside .scrm-contact-field-select, 
+.inside .scrm-lead-field-select {
+    display: block;
+}
+
+.inside .scrm-contact-field-select label, 
+.inside .scrm-lead-field-select label {
+    
+}
+
+.inside .scrm-contact-field-select select, 
+.inside .scrm-lead-field-select select {
+    
+}
+
+.inside .scrm-contact-field-textarea, 
+.inside .scrm-lead-field-textarea {
+    display: block;
+}
+
+.inside .scrm-contact-field-textarea label, 
+.inside .scrm-lead-field-textarea label {
+    width: 100%;
+    text-align: center;
+}
+ 
+.inside .scrm-contact-field-textarea textarea, 
+.inside .scrm-lead-field-textarea textarea {
+    width: 100%;
+}
+
+/*
+ * Contact
+ */
+#scrm-contact-primary .inside .scrm-contact-block, 
+#scrm-contact-secondary .inside .scrm-contact-block, 
+#scrm-contact-address .inside .scrm-contact-block {
+    width: 49.5%;
+}
+
+#scrm-contact-primary label, 
+#scrm-contact-secondary label, 
+#scrm-contact-address label {
+    width: 30%;
+    padding-right: 10px;
+}
+
+#scrm-contact-primary input, 
+#scrm-contact-secondary input, 
+#scrm-contact-address input {
+    width: 65%;
+}
+
+/*
+ * Lead
+ */
+#scrm-lead-primary .inside .scrm-lead-block {
+    width: 33%;
+}
+
+#scrm-lead-secondary .inside .scrm-lead-block {
+    width: 49.5%;
+}
+
+#scrm-lead-contact .inside .scrm-lead-block {
+    width: 100%;
+}
+
+#scrm-lead-contact .inside #scrm-lead-field-contact label {
+    width: 25%;
+}
+
+#scrm-lead-contact .inside #scrm-lead-field-contact input {
+    width: 50%;
+}
+
+#scrm-lead-contact .inside article {
+    display: inline-table;
+    width: 30%;
+    padding: 1%;
+}
+
+#scrm-lead-contact .inside article h2 {
+    border-bottom: 1px darkgray dotted;
+    text-align: center;
+}
+
+#scrm-lead-contact .inside article ul li span {
+    display: inline-block;
+    width: 49%;
+    padding-right: 10px;
+    text-align: right;
+}
