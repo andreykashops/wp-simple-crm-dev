@@ -71,12 +71,18 @@ final class SCRM
 
     private function includes()
     {
+        
+        /**
+         * Class autoloader.
+         */
+        include_once SCRM_ABSPATH . 'includes/class-scrm-autoloader.php';
 
         /**
          * Core classes.
          */
         include_once SCRM_ABSPATH . 'includes/class-scrm-post-types.php';
         include_once SCRM_ABSPATH . 'includes/class-scrm-install.php';
+        include_once SCRM_ABSPATH . 'includes/class-scrm-ajax.php';
 
         /**
          * Load admin core
@@ -172,5 +178,19 @@ final class SCRM
         }
     }
 
+    /**
+     * Get the plugin url
+     */
+    public function plugin_url() {
+        
+        return untrailingslashit( plugins_url( '/', SCRM_PLUGIN_FILE ) );
+    }
 
+    /**
+     * Get the plugin path
+     */
+    public function plugin_path() {
+        
+        return untrailingslashit( plugin_dir_path( SCRM_PLUGIN_FILE ) );
+    }
 }
