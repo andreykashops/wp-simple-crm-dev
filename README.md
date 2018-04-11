@@ -2,4 +2,4 @@
 CRM system for Wordpress in development
 
 Author Pavluk Andrey, 
-Send your recommends to andreykashops@gmial.com
+Send your recommends to andreykashops@gmail.com
