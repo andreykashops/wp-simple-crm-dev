@@ -1,5 +1,6 @@
 <?php
 /**
+ * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 10.04.2018
  */
@@ -25,6 +26,7 @@ class SCRM_AJAX {
         
         $ajax_events = [
             'refresh_contact_info' => false,
+            'refresh_contact_image' => false,
         ];
         
         foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -46,9 +48,21 @@ class SCRM_AJAX {
      */
     public static function refresh_contact_info() {
             
-        $post_id = $_POST[ 'data' ];
-
-        scrm_meta_contact_info( $post_id );
+        $post_id = sanitize_key( $_POST[ 'post_id' ] );
+        
+        scrm_get_meta_boxes( $post_id, 'SCRM_Meta_Box_Contact' );
+        
+        wp_die();
+    }
+    
+    /**
+     * Refresh contact image
+     */
+    public static function refresh_contact_image() {
+        
+        $post_id = sanitize_key( $_POST[ 'post_id' ] );
+        
+        scrm_metabox_field_thumbnail( SCRM_Meta_Box_Contact::$type, $post_id );
         
         wp_die();
     }
