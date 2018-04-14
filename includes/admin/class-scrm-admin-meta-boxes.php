@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 06.04.2018
  */
@@ -25,30 +26,26 @@ class SCRM_Admin_Meta_Boxes {
         add_action( 'save_post', [ $this, 'save_meta_boxes' ], 1, 2 );
 
         // Save Lead Meta Boxes
-        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead_Primary::save', 10, 1 );
-        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead_Secondary::save', 20, 1 );
-        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead_Contact::save', 30, 1 );
+        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead::save', 10, 1 );
+        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead_Contact::save', 20, 1 );
+        add_action( 'scrm_lead_save_meta_boxes', 'SCRM_Meta_Box_Lead_Contact_Image::save', 30, 1 );
         
         // Save Contact Meta Boxes
-        add_action( 'scrm_contact_save_meta_boxes', 'SCRM_Meta_Box_Contact_Primary::save', 10, 1 );
-        add_action( 'scrm_contact_save_meta_boxes', 'SCRM_Meta_Box_Contact_Secondary::save', 20, 1 );
-        add_action( 'scrm_contact_save_meta_boxes', 'SCRM_Meta_Box_Contact_Address::save', 30, 1 );
+        add_action( 'scrm_contact_save_meta_boxes', 'SCRM_Meta_Box_Contact::save', 10, 1 );
     }
 
     /**
      * Add meta boxes
      */
     public function add_meta_boxes() {
-
+        
         // Lead
-        add_meta_box( 'scrm-lead-primary', __( 'Primary', 'scrm' ), 'SCRM_Meta_Box_Lead_Primary::output', 'scrm_lead', 'normal', 'high' );
-        add_meta_box( 'scrm-lead-secondary', __( 'Secondary', 'scrm' ), 'SCRM_Meta_Box_Lead_Secondary::output', 'scrm_lead', 'normal', 'high' );
-        add_meta_box( 'scrm-lead-contact', __( 'Contact', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact::output', 'scrm_lead', 'normal', 'high' );
+        add_meta_box( 'scrm-lead', __( 'Lead info', 'scrm' ), 'SCRM_Meta_Box_Lead::output', 'scrm_lead', 'normal', 'high' );
+        add_meta_box( 'scrm-lead-contact', __( 'Contact info', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact::output', 'scrm_lead', 'normal', 'high' );
+        add_meta_box( 'scrm-lead-contact-image', __( 'Contact image', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact_Image::output', 'scrm_lead', 'side', 'low' );
         
         // Contact
-        add_meta_box( 'scrm-contact-primary', __( 'Primary', 'scrm' ), 'SCRM_Meta_Box_Contact_Primary::output', 'scrm_contact', 'normal', 'high' );
-        add_meta_box( 'scrm-contact-secondary', __( 'Secondary', 'scrm' ), 'SCRM_Meta_Box_Contact_Secondary::output', 'scrm_contact', 'normal', 'high' );
-        add_meta_box( 'scrm-contact-address', __( 'Address', 'scrm' ), 'SCRM_Meta_Box_Contact_Address::output', 'scrm_contact', 'normal', 'high' );
+        add_meta_box( 'scrm-contact', __( 'Contact Info', 'scrm' ), 'SCRM_Meta_Box_Contact::output', 'scrm_contact', 'normal', 'high' );
     }
 
     /**
