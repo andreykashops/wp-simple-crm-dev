@@ -6,7 +6,7 @@
 
 jQuery(document).ready(function ($) {
 
-    $('#scrm-lead-contact').change(function () {
+    $('#scrm-lead-contact-id').change(function () {
 
         var post_id = $(this).find(":selected").val();
 
@@ -18,7 +18,8 @@ jQuery(document).ready(function ($) {
                 },
                 function (response) {
 
-                    $('#scrm-lead-contact .inside').html(response);
+                    $('#scrm-lead-contact .scrm-contact-block-1').replaceWith(response);
+                    $('#scrm-lead-contact-id').val(post_id);
                 },
                 'html'
         );

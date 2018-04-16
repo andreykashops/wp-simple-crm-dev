@@ -109,7 +109,7 @@ function scrm_metabox_field_textarea( $prefix, $id, $value, $lable ) {
  * Output a field box select
  */
 function scrm_metabox_field_select( $prefix, $id, $value, $lable, $items, $indexed = true ) {
-
+    
     $id = esc_attr( $id );
     $value = esc_attr( $value );
     ?>
@@ -212,50 +212,26 @@ function scrm_metabox_field_thumbnail( $prefix, $post_id ) {
 /**
  * Output a meta info
  */
-function scrm_get_meta_boxes( $post_id, $class ) {
+function scrm_get_meta_boxes( $post_id, $class, $block = 1, $hide = [] ) {
             
-    if ( !empty( $post_id ) ) {
+    $meta = get_post_meta( $post_id, $class::$type, true );
         
-        $meta = get_post_meta( $post_id, $class::$type, true );
-    } else {
-        
-        $meta = [];
-    }
-    
     $prefix = scrm_prefix( $class::$type );
     
     $fields = $class::fields();
-    
-    if ( $post_id == 0 ) :
-        ?>
-    
-        <div class="<?php scrm_metabox_block( $prefix, 0 ); ?>">
-            
-            <div class="<?php scrm_metabox_group( $prefix, 'title' ); ?>">
-                
-                <?php $class::metabox( $prefix, 'title', '', 'Title' ); ?>
-            
-            </div>
-        
-        </div>
-            
-        <?php
-    endif;
-    
-    $block = 1;
     ?>
     
     <div class="<?php $block = scrm_metabox_block( $prefix, $block ); ?>">
 
         <?php foreach ( $fields as $group => $items ) : ?>
-
+                
+            <?php if ( in_array( $group, $hide ) ) continue; ?>
+        
             <div class="<?php scrm_metabox_group( $prefix, $group ); ?>">
 
                 <?php
-                foreach ( $items as $lable => $id ) {
-
-                    $class::metabox( $prefix, $id, !empty( $meta[ $id ] ) ? $meta[ $id ] : '', $lable );
-                }
+                foreach ( $items as $lable => $id ) 
+                    $class::metabox( $prefix, $id, isset( $meta[ $id ] ) ? $meta[ $id ] : '', $lable );
                 ?>
 
             </div>
@@ -265,6 +241,8 @@ function scrm_get_meta_boxes( $post_id, $class ) {
     </div>
     
     <?php
+    
+    return $block;
 }
 
 /**

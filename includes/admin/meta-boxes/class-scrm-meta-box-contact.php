@@ -59,7 +59,6 @@ class SCRM_Meta_Box_Contact {
     public static function metabox( $prefix, $id, $value, $lable ) {
 
         switch ( $id ) {
-            case 'title':
             case 'first-name':
             case 'phone':
                 $type = 'text';
