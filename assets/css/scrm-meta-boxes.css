@@ -25,7 +25,6 @@
     font-size: 14px;
     text-align: right;
     vertical-align: baseline;
-    letter-spacing: 2px;
 }
 
 .inside [class*='-field-'] label::after {
@@ -36,7 +35,6 @@
 .inside [class*='-field-'] input {
     display: inline-block;
     width: 70%;
-    letter-spacing: 1.5px;
 }
 
 .inside [class*='-field-'] input[type='checkbox'] {

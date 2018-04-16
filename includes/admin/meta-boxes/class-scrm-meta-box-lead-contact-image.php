@@ -10,17 +10,22 @@ defined( 'ABSPATH' ) || exit;
  * SCRM_Meta_Box_Lead_Contact_Image Class
  */
 class SCRM_Meta_Box_Lead_Contact_Image {
-
+    
+    /**
+     * Type
+     */
+    public static $type = 'scrm_lead';
+    
     /**
      * Output the metabox
      */
     public static function output( $post ) {
 
-        $lead = get_post_meta( $post->ID, SCRM_Meta_Box_Lead::$type, true );
+        $lead = get_post_meta( $post->ID, self::$type, true );
         
-        $post_id = !empty( $lead[ 'contact' ] ) ? $lead[ 'contact' ] : 0;
+        $contact_id = !empty( $lead[ 'contact-id' ] ) ? $lead[ 'contact-id' ] : null;
         
-        scrm_metabox_field_thumbnail( SCRM_Meta_Box_Contact::$type, $post_id );
+        scrm_metabox_field_thumbnail( SCRM_Meta_Box_Contact::$type, $contact_id );
     }
 
     /**
@@ -28,12 +33,12 @@ class SCRM_Meta_Box_Lead_Contact_Image {
      */
     public static function save( $post_id ) {
         
-        $lead = get_post_meta( $post_id, SCRM_Meta_Box_Lead::$type, true );
+        $lead = get_post_meta( $post_id, self::$type, true );
         
         $contact = $_POST[ SCRM_Meta_Box_Contact::$type ];
         
         $contact[ 'thumbnail-id' ] = sanitize_key( $contact[ 'thumbnail-id' ] );
         
-        update_post_meta( $lead[ 'contact' ], '_thumbnail_id', $contact[ 'thumbnail-id' ] );
+        update_post_meta( $lead[ 'contact-id' ], '_thumbnail_id', $contact[ 'thumbnail-id' ] );
     }
 }

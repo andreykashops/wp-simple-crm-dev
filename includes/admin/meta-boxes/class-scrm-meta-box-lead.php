@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -35,9 +36,6 @@ class SCRM_Meta_Box_Lead {
                 'About status'      => 'about-status',
                 'About source'      => 'about-source',
                 'Comment'           => 'comment',
-            ],
-            'contact'           => [
-                'Contact'           => 'contact',
             ],
         ];
 
@@ -87,15 +85,6 @@ class SCRM_Meta_Box_Lead {
                 }
                 wp_reset_postdata();
                 break;
-            case 'contact':
-                $posts = get_posts( [ 'posts_per_page' => -1, 'post_type' => 'scrm_contact' ] );
-                $items[ 0 ] = 'New Contact';
-                foreach ( $posts as $post ) {
-
-                    $items[ $post->ID ] = $post->post_title;
-                }
-                wp_reset_postdata();
-                break;
         }
 
         return $items;
@@ -127,9 +116,6 @@ class SCRM_Meta_Box_Lead {
             case 'comment':
                 scrm_metabox_field_textarea( $prefix, $id, $value, $lable );
                 break;
-            case 'contact':
-                scrm_metabox_field_select( $prefix, $id, $value, $lable, self::values( $id ), false );
-                break;
             default :
                 scrm_metabox_field_input( $prefix, $id, $value, $lable );
                 break;
@@ -154,10 +140,8 @@ class SCRM_Meta_Box_Lead {
         
         $meta = $_POST[ self::$type ];
         
-        $meta[ 'contact' ] = sanitize_key( $meta[ 'contact' ] );
+        if ( $meta[ 'contact-id' ] != 0 ) {
         
-        if ( $meta[ 'contact' ] != 0 ) {
-            
             scrm_set_meta_data( $post_id, __CLASS__, $meta );
         }
     }
