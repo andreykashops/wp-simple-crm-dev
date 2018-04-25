@@ -1,5 +1,6 @@
 <?php
 /**
+ * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 09.04.2018
  */
@@ -9,44 +10,66 @@ defined( 'ABSPATH' ) || exit;
  * SCRM_Meta_Box_Lead_Contact Class
  */
 class SCRM_Meta_Box_Lead_Contact {
+    
+    /**
+     * Type
+     */
+    public static $type = 'scrm_lead';
 
+    /**
+     *  Get metabox fields
+     */
+    public static function fields() {
+
+        $fields = [
+            'primary'        => [
+                'Contact ID'            => 'contact-id',
+            ],
+        ];
+
+        return $fields;
+    }
+    
+    /**
+     * Lead values
+     */
+    public static function values( $id ) {
+        
+        $items = '';
+
+        switch ( $id ) {
+            case 'contact-id':
+                $items = scrm_get_contacts();
+                break;
+        }
+        
+        return $items;
+    }
+    
+    /**
+     * Router field boxes
+     */
+    public static function metabox( $prefix, $id, $value, $lable ) {
+
+        switch ( $id ) {
+            case 'contact-id':
+                scrm_metabox_field_select( $prefix, $id, $value, $lable, self::values( $id ), false );
+                break;
+        }
+    }
+    
     /**
      * Output the metabox
      */
     public static function output( $post ) {
 
-        $scrm_lead = get_post_meta( $post->ID, 'scrm_lead', true );
-
-        $contact = !empty( $scrm_lead[ 'contact' ] ) ? $scrm_lead[ 'contact' ] : '';
-
-        $block = 1;
-        ?>
-
-        <div class="<?php $block = scrm_metabox_block( $block ); ?>">
-
-            <?php $selected =  scrm_metabox_field_select( 'contact', $contact, 'Contact' ); ?>
-            
-        </div>
-            
-        <div class="<?php $block = scrm_metabox_block( $block ); ?>">
-            
-            <div id="<?php echo $prefix; ?>-contact-info">
-            
-                <?php                        
-                if ( ! $selected ) {
-                    
-                    $selected = wp_get_recent_posts( [ 'numberposts' => 1, 'post_type' => 'scrm_contact' ] )[0][ 'ID' ];
-                    wp_reset_query();
-                }
-                
-                scrm_meta_contact_info( $selected ); 
-                ?>
-                
-            </div>
-
-        </div>
-
-        <?php
+        $lead = get_post_meta( $post->ID, self::$type, true );
+        
+        $contact_id = isset( $lead[ 'contact-id' ] ) ? $lead[ 'contact-id' ] : null;
+        
+        scrm_metabox_fields_load( $post->ID, __CLASS__, 0 );
+        
+        scrm_metabox_custom_fields_load( $contact_id, SCRM_Meta_Box_Contact::$type );
     }
 
     /**
@@ -54,10 +77,29 @@ class SCRM_Meta_Box_Lead_Contact {
      */
     public static function save( $post_id ) {
         
-        $scrm_lead = $_POST[ 'scrm_lead' ];
+        $lead = $_POST[ self::$type ];
         
-        $scrm_lead[ 'contact' ] = sanitize_text_field( $scrm_lead[ 'contact' ] );
+        $lead[ 'contact-id' ] = sanitize_key( $lead[ 'contact-id' ] );
         
-        update_post_meta( $post_id, 'scrm_lead', wp_parse_args( $scrm_lead, get_post_meta( $post_id, 'scrm_lead', true ) ) );
+        $contact = $_POST[ SCRM_Meta_Box_Contact::$type ];
+        
+        if ( $lead[ 'contact-id' ] == 0 ) {
+            
+            $title = sanitize_text_field( $contact[ 'first-name' ] );
+            $title .= !empty( $contact[ 'last-name' ] ) ? ' ' . sanitize_text_field( $contact[ 'last-name' ] ) : '';
+            $title .= !empty( $contact[ 'middle-name' ] ) ? ' ' . sanitize_text_field( $contact[ 'middle-name' ] ) : '';
+            
+            $args = [
+                'post_type'     => SCRM_Meta_Box_Contact::$type,
+                'post_status'   => 'publish',
+                'post_title'    => $title,
+            ];
+            
+            $lead[ 'contact-id' ] = wp_insert_post( $args );
+            
+            scrm_metabox_custom_fields_save( $post_id, self::$type, $lead );
+        } 
+        
+        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], SCRM_Meta_Box_Contact::$type, $contact );
     }
 }

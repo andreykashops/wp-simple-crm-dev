@@ -1,5 +1,6 @@
 <?php
 /**
+ * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 10.04.2018
  */
@@ -24,7 +25,11 @@ class SCRM_AJAX {
     public static function add_ajax_events() {
         
         $ajax_events = [
-            'refresh_contact_info' => false,
+            'refresh_contact_info'                  => false,
+            'refresh_contact_image'                 => false,
+            'get_custom_field'                      => false,
+            'get_custom_field_input'                => false,
+            'refresh_custom_field_values'           => false,
         ];
         
         foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -46,9 +51,51 @@ class SCRM_AJAX {
      */
     public static function refresh_contact_info() {
             
-        $post_id = $_POST[ 'data' ];
+        $post_id = sanitize_key( $_POST[ 'post_id' ] );
+        
+        scrm_metabox_custom_fields_load( $post_id, SCRM_Meta_Box_Contact::$type );
+        #scrm_get_meta_boxes( $post_id, 'SCRM_Meta_Box_Contact' );
+        
+        wp_die();
+    }
+    
+    /**
+     * Refresh contact image
+     */
+    public static function refresh_contact_image() {
+        
+        $post_id = sanitize_key( $_POST[ 'post_id' ] );
+        
+        scrm_metabox_field_thumbnail( SCRM_Meta_Box_Contact::$type, $post_id );
+        
+        wp_die();
+    }
+    
+    /**
+     * Get custom field
+     */
+    public static function get_custom_field() {
+        
+        $prefix = sanitize_key( $_POST[ 'prefix' ] );
+        $id = sanitize_key( $_POST[ 'id' ] );
+        $i = sanitize_key( $_POST[ 'i' ] );
 
-        scrm_meta_contact_info( $post_id );
+        scrm_option_custom_field( $prefix, $id, $i );
+        
+        wp_die();
+    }
+    
+    /**
+     * Refresh custom field values
+     */
+    public static function refresh_custom_field_values() {
+        
+        $prefix = sanitize_key( $_POST[ 'prefix' ] );
+        $id = sanitize_key( $_POST[ 'id' ] );
+        $i = sanitize_key( $_POST[ 'i' ] );
+        $field[ 'type' ] = sanitize_key( $_POST[ 'type' ] );
+        
+        scrm_option_custom_field_values( $prefix, $id, $i, $field );
         
         wp_die();
     }

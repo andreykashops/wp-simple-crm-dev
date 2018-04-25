@@ -1,5 +1,6 @@
 <?php
 /**
+ * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 06.04.2018
  */
