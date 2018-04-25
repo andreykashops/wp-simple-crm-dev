@@ -1,0 +1,142 @@
+/**
+ * Project manager: Andrey Pavluk
+ * Created by Roman Hofman
+ * Date: 18.04.2018
+ */
+
+/*
+ * Fields table
+ */
+.scrm-fields-table {
+    max-width: 1000px;
+    box-sizing: border-box;
+}
+.scrm-fields-table thead,
+.scrm-fields-table tbody, 
+.scrm-fields-table tfoot {
+    
+}
+.scrm-fields-table thead th {
+    padding: 15px 10px;
+}
+.scrm-fields-table tfoot th {
+    padding: 10px;
+    border-top: none;
+} 
+
+/*
+ * Table row
+ */
+.scrm-fields-table tbody tr:nth-child(even) {
+    background-color: #ececec;
+}
+.scrm-fields-table tbody tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+/*
+ * Table data
+ */
+.scrm-fields-table td {
+    padding: 0; 
+}
+
+/*
+ * Table order
+ */
+.scrm-fields-table th.order {
+    width: 50px;
+}
+.scrm-fields-table td.order {
+    width: 50px;
+    border-right: 1px silver dotted;
+    border-bottom: 1px silver dotted;
+    background-color: #e1e1e1;
+    cursor: move;
+    text-align: center;
+    vertical-align: middle;
+}
+.scrm-fields-table .order span {
+    display: inline-block;
+    width: 42px;
+    height: 30px;
+    padding-top: 12px;
+    border: 1px silver dotted;
+    border-radius: 21px;
+}
+.scrm-fields-table .current .order {
+    background-color: #d1d1d1;
+}
+.scrm-fields-table .built-in .order span {
+    font-weight: bold;
+}
+
+/*
+ * Table field
+ */
+.scrm-fields-table .field {
+    width: 950px;
+    border-bottom: 1px silver dotted;
+}
+.scrm-fields-table label,
+.scrm-fields-table .help-label {
+    display: inline-block;
+    width: 12%;
+    margin: 0;
+    padding: 5px;
+    cursor: move;
+    text-align: right;
+    vertical-align: top;
+}
+.scrm-fields-table label:after,
+.scrm-fields-table .help-label:after {
+    content: ' : ';
+}
+.scrm-fields-table .type-info {
+    font-style: italic;
+}
+.scrm-fields-table input, 
+.scrm-fields-table select,
+.scrm-fields-table textarea {
+    width: 85%;
+    margin: 0;
+    padding: 3px;
+}
+.scrm-fields-table .field-title {
+    padding-top: 10px;
+    padding-left: 50px;
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+.scrm-fields-table .field-data {
+    padding: 20px 10px;
+    border-top: 1px silver dotted;
+    background-color: #f9f9f9;
+}
+.scrm-fields-table .help-text {
+    display: inline-block;
+    padding: 5px;
+    font-style: italic;
+}
+table.scrm-fields-table p.field-required input{
+    width: 20px;
+}
+table.scrm-fields-table p.field-required span {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+table.scrm-fields-table p.field-show input {
+    margin-top: 5px;
+    width: 20px;
+} 
+
+/*
+ * Table buttons
+ */
+.scrm-fields-table .add_row:before {
+    content: '+';
+}
+.scrm-fields-table .remove_row:before {
+    content: '-';
+}

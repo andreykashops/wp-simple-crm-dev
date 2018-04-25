@@ -29,14 +29,14 @@ class SCRM_Admin_Menu
         $leads_page = add_submenu_page('scrm', __('Leads', 'scrm'), __('Leads', 'scrm'), 'scrm_manage', 'scrm', array($this, 'scrm_leads_page'));
 
         $settings_page = add_submenu_page('scrm', __('Settings', 'scrm'), __('Settings', 'scrm'), 'scrm_manage', 'scrm_settings', array($this, 'scrm_settings_page'));
-
-
+        
+        add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
     }
 
     /**
      * Leads page output
      */
-    public function scrm_leads_page(){
+    public function scrm_leads_page(){ 
         SCRM_Admin_Leads_Page::output();
     }
 
@@ -45,6 +45,22 @@ class SCRM_Admin_Menu
      */
     public function scrm_settings_page(){
         SCRM_Admin_Settings_Page::output();
+    }
+
+    /**
+     * SCRM settings
+     */
+    public function settings_page_init() {
+        
+        global $current_page, $current_tab;
+        
+        SCRM_Admin_Settings_Page::settings_pages();
+        
+        $current_page = sanitize_title( wp_unslash( $_GET['page'] ) );
+        
+        $current_tab = empty( $_GET['tab'] ) ? 'general' : sanitize_title( wp_unslash( $_GET['tab'] ) );
+        
+        SCRM_Admin_Settings_Page::save();
     }
 }
 

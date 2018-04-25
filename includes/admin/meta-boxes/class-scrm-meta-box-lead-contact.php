@@ -39,13 +39,7 @@ class SCRM_Meta_Box_Lead_Contact {
 
         switch ( $id ) {
             case 'contact-id':
-                $posts = get_posts( [ 'posts_per_page' => -1, 'post_type' => 'scrm_contact' ] );
-                $items[ 0 ] = __( 'Create New', 'scrm' );
-                foreach ( $posts as $post ) {
-
-                    $items[ $post->ID ] = $post->post_title;
-                }
-                wp_reset_postdata();
+                $items = scrm_get_contacts();
                 break;
         }
         
@@ -73,9 +67,9 @@ class SCRM_Meta_Box_Lead_Contact {
         
         $contact_id = isset( $lead[ 'contact-id' ] ) ? $lead[ 'contact-id' ] : null;
         
-        scrm_get_meta_boxes( $post->ID, __CLASS__, 0 );
+        scrm_metabox_fields_load( $post->ID, __CLASS__, 0 );
         
-        scrm_get_meta_boxes( $contact_id, 'SCRM_Meta_Box_Contact' );
+        scrm_metabox_custom_fields_load( $contact_id, SCRM_Meta_Box_Contact::$type );
     }
 
     /**
@@ -103,9 +97,9 @@ class SCRM_Meta_Box_Lead_Contact {
             
             $lead[ 'contact-id' ] = wp_insert_post( $args );
             
-            scrm_set_meta_data( $post_id, __CLASS__, $lead );
+            scrm_metabox_custom_fields_save( $post_id, self::$type, $lead );
         } 
         
-        scrm_set_meta_data( $lead[ 'contact-id' ], 'SCRM_Meta_Box_Contact', $contact );
+        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], SCRM_Meta_Box_Contact::$type, $contact );
     }
 }

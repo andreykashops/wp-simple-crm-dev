@@ -29,11 +29,21 @@ class SCRM_Admin_Assets {
         $screen = get_current_screen();
         $screen_id = $screen ? $screen->id : '';
         
-        wp_register_style( 'scrm-admin-meta-boxes', SCRM()->plugin_url() . '/assets/css/scrm-meta-boxes.css' );
+        $suffix = ''; // Need min version of styles
         
-        if ( in_array( $screen_id, scrm_get_screen_ids() ) ) {
+        wp_register_style( 'scrm-admin-meta-boxes', SCRM()->plugin_url() . '/assets/css/scrm-meta-boxes' . $suffix . '.css' );
+        wp_register_style( 'scrm-admin-settings-page', SCRM()->plugin_url() . '/assets/css/scrm-settings-page' . $suffix . '.css' );
+        
+        switch ( $screen_id ) {
             
-            wp_enqueue_style( 'scrm-admin-meta-boxes' );
+            case 'scrm_lead':
+            case 'scrm_contact':
+                wp_enqueue_style( 'scrm-admin-meta-boxes' );
+                break;
+            
+            case 'crm_page_scrm_settings':
+                wp_enqueue_style( 'scrm-admin-settings-page' );
+                break;
         }
     }
 
@@ -45,12 +55,18 @@ class SCRM_Admin_Assets {
         $screen = get_current_screen();
         $screen_id = $screen ? $screen->id : '';
         
-        wp_register_script( 'scrm-admin-meta-boxes-lead', SCRM()->plugin_url() . '/assets/js/scrm-meta-boxes-lead.js' );
+        $suffix = ''; // Need min version of scripts
         
-        // Meta boxes
-        if ( in_array( $screen_id, [ 'scrm_lead' ] ) ) {
-            
-            wp_enqueue_script( 'scrm-admin-meta-boxes-lead' );
+        wp_register_script( 'scrm-admin-lead-page', SCRM()->plugin_url() . '/assets/js/scrm-lead-page' . $suffix . '.js' );
+        wp_register_script( 'scrm-admin-settings-page', SCRM()->plugin_url() . '/assets/js/scrm-settings-page' . $suffix . '.js', [ 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris' ], SCRM()->version, true );
+        
+        switch ( $screen_id ) {
+            case 'scrm_lead':
+                wp_enqueue_script( 'scrm-admin-lead-page' );
+                break;
+            case 'crm_page_scrm_settings':
+                wp_enqueue_script( 'scrm-admin-settings-page' );
+                break;
         }
     }
 }
