@@ -7,21 +7,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Meta box prefix
- */
-function scrm_prefix( $prefix ) {
-    
-    $prefix = str_replace( '_', '-', $prefix );
-    
-    return $prefix;
-}
-
-/**
  * Meta box block
  */
 function scrm_metabox_block( $prefix, $block ) {
     
-    echo $prefix, '-block ', $prefix, '-block-', $block;
+    printf( '%1$s-block %1$s-block-%2$s', $prefix, $block );
     
     return ++$block;
 }
@@ -31,43 +21,82 @@ function scrm_metabox_block( $prefix, $block ) {
  */
 function scrm_metabox_group( $prefix, $group ) {
     
-    echo $prefix, '-group ', $prefix, '-group-', $group;
+    printf( '%1$s-group %1$s-group-%2$s', $prefix, $group );
 }
 
 /**
  * Output a field box input
  */
-function scrm_metabox_field_input( $prefix, $id, $value, $lable, $type = 'text', $data = '' ) {
+function scrm_metabox_field_input( $prefix, $id, $value, $lable, $type = 'text', $other = '' ) {
 
     $id = esc_attr( $id );
     $value = esc_attr( $value );
     
-    if ( $type == 'number' ) {
-        
-        $value = !empty( $value ) ? $value : '0';
-    } elseif ( $type == 'checkbox') {
-        
-        $data = checked( $value, 1, false );
-        $value = '1';
+    switch ( $type ) {
+        case 'number':
+            $value = !empty( $value ) ? $value : '0';
+            break;
+        case 'checkbox':
+            $other .= ' ' . checked( $value, 1, false );
+            $value = '1';
+            break;
     }
     ?>
 
-    <p id="<?php echo $prefix; ?>-field-<?php echo $id; ?>" 
-       class="<?php echo $prefix; ?>-field <?php echo $prefix; ?>-field-input">
+    <p id="<?php printf( '%s-field-%s', $prefix, $id ); ?>" 
+       class="<?php printf( '%1$s-field %1$s-field-input', $prefix ); ?>">
 
-        <label for="<?php echo $prefix, '-', $id; ?>">
+        <label for="<?php printf( "%s-%s", $prefix, $id ); ?>">
             <?php _e( $lable, 'scrm' ); ?>
         </label>
 
-        <input id="<?php echo $prefix, '-', $id; ?>" 
-               class="<?php echo $prefix; ?>-input"
-               name="<?php echo str_replace( '-', '_', $prefix ), '[', $id, ']'; ?>"
+        <input id="<?php printf( "%s-%s", $prefix, $id ); ?>" 
+               class="<?php printf( "%s-input", $prefix );?>"
+               name="<?php printf( "%s[%s]", str_replace( '-', '_', $prefix ), $id ); ?>"
                type="<?php echo $type; ?>" 
                value="<?php echo $value; ?>"
-               <?php echo $data; ?>/>
+               <?php echo $other; ?>/>
 
     </p>
 
+    <?php
+}
+
+/**
+ * Option a field box radio
+ */
+function scrm_metabox_field_radio( $prefix, $id, $label, $value, $values ) {
+    
+    $value = !empty( $value ) ? $value : '0';
+    ?>
+    
+    <p class="<?php echo $prefix; ?>-field-<?php echo $id; ?>"
+       class="<?php echo $prefix; ?>-field <?php echo $prefix; ?>-field-radio">
+        
+        <label for="<?php printf( "%s-%s", $prefix, $id ); ?>">
+            
+            <?php _e( $label, 'scrm' ); ?>
+            
+        </label>
+        
+        <?php foreach ( $values as $item => $text ) : ?>
+        
+            <input id="<?php printf( "%s-%s-%s", $prefix, $id, strtolower( $text ) ); ?>"
+                   class="<?php printf( "%s-radio", $prefix ); ?>" 
+                   type="radio" 
+                   name="<?php printf( "%s[%s]", str_replace( '-', '_', $prefix ), $id ); ?>" 
+                   value="<?php echo $item; ?>" 
+                   <?php checked( $value, $item ); ?>/>
+            <span>
+                
+                <?php _e( $text, 'scrm' ); ?>
+                
+            </span>
+        
+        <?php endforeach; ?>
+        
+    </p>
+    
     <?php
 }
 
@@ -210,9 +239,9 @@ function scrm_metabox_field_thumbnail( $prefix, $post_id ) {
 }
 
 /**
- * Output a meta info
+ * Metabox fields load
  */
-function scrm_get_meta_boxes( $post_id, $class, $block = 1, $hide = [] ) {
+function scrm_metabox_fields_load( $post_id, $class, $block = 1, $hide = [] ) {
             
     $meta = get_post_meta( $post_id, $class::$type, true );
         
@@ -246,9 +275,9 @@ function scrm_get_meta_boxes( $post_id, $class, $block = 1, $hide = [] ) {
 }
 
 /**
- * Save a meta info
+ * Metabox fields save
  */
-function scrm_set_meta_data( $post_id, $class, $meta ) {
+function scrm_metabox_fields_save( $post_id, $class, $meta ) {
     
     $fields = $class::fields();
     
@@ -261,4 +290,105 @@ function scrm_set_meta_data( $post_id, $class, $meta ) {
     }
     
     update_post_meta( $post_id, $class::$type, wp_parse_args( $meta, get_post_meta( $post_id, $class::$type, true ) ) );
+}
+
+/**
+ * Metabox custom fields load
+ */
+function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
+
+    $meta = get_post_meta( $post_id, $prefix, true );
+    
+    $option = get_option( str_replace( '_', '_settings_', $prefix ) );
+    
+    $prefix = scrm_prefix( $prefix );
+    
+    if ( !empty( $option ) ) :
+    ?>
+    
+        <div class="<?php $block = scrm_metabox_block( $prefix, $block ); ?>">
+
+            <?php foreach ( $option as $group => $fields ) : ?>
+
+                <div class="<?php scrm_metabox_group( $prefix, $group ); ?>">
+
+                    <?php
+                    foreach ( $fields as $field ) {
+
+                        if ( isset( $field[ 'show' ] ) ) {
+
+                            $label = $field[ 'label' ];
+                            $id = $field[ 'name' ];
+                            $type = $field[ 'type' ];
+                            $value = isset( $meta[ $id ] ) ? $meta[ $id ] : $field[ 'value' ];
+                            $other = '';
+
+                            if ( $field[ 'required' ] )
+                                $other .= ' required=""';
+
+                            if ( isset( $field[ 'placeholder' ] ) && !empty( $field[ 'placeholder' ] ) ) 
+                                $other .= sprintf( ' placeholder="%s"', $field[ 'placeholder' ] );
+
+                            switch ( $type ) {
+                                case 'text':
+                                case 'date':
+                                    scrm_metabox_field_input( $prefix, $id, $value, $label, $type, $other );
+                                    break;
+                                case 'number':
+                                    scrm_metabox_field_input( $prefix, $id, $value, $label, $type );
+                                    break;
+                                case 'textarea':
+                                    scrm_metabox_field_textarea( $prefix, $id, $value, $label );
+                                    break;
+                                case 'select':
+                                    $items = $field[ 'values' ];
+                                    scrm_metabox_field_select( $prefix, $id, $value, $label, $items, false );
+                                    break;
+                                case 'radio':
+                                    $values = $field[ 'values' ];
+                                    scrm_metabox_field_radio( $prefix, $id, $label, $value, $values );
+                                    break;
+                                case 'checkbox':
+                                    scrm_metabox_field_input( $prefix, $id, $value, $label, $type );
+                                    break;
+                                case 'users':
+                                    $items = scrm_get_users();
+                                    scrm_metabox_field_select( $prefix, $id, $value, $label, $items, false );
+                                    break;
+                            }
+                        }
+                    }
+                    ?>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+        
+    <?php
+    else:
+    ?>    
+        <p>
+            <a href="<?php echo admin_url( 'admin.php?page=scrm_settings&tab=' . explode( '-', $prefix )[1] ); ?>">
+                <?php _e( 'Please create and save custom fields.', 'scrm' ); ?>
+            </a>
+        </p>
+    <?php
+    endif;
+    
+    return $block;
+}
+
+/**
+ * Metabox custom fields save
+ */
+function scrm_metabox_custom_fields_save( $post_id, $prefix, $meta ) {
+    
+    foreach ( $meta as $key => $value ) {
+        
+        $meta[ $key ] = sanitize_text_field( $value );
+    }
+    
+    update_post_meta( $post_id, $prefix, $meta );
 }

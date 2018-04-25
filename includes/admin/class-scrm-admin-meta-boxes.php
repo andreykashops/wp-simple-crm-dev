@@ -43,6 +43,7 @@ class SCRM_Admin_Meta_Boxes {
         add_meta_box( 'scrm-lead', __( 'Lead info', 'scrm' ), 'SCRM_Meta_Box_Lead::output', 'scrm_lead', 'normal', 'high' );
         add_meta_box( 'scrm-lead-contact', __( 'Contact info', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact::output', 'scrm_lead', 'normal', 'high' );
         add_meta_box( 'scrm-lead-contact-image', __( 'Contact image', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact_Image::output', 'scrm_lead', 'side', 'low' );
+        add_meta_box( 'scrm-lead-product', __( 'Order info', 'scrm' ), 'SCRM_Meta_Box_Lead_Order::output', 'scrm_lead', 'side', 'low' );
         
         // Contact
         add_meta_box( 'scrm-contact', __( 'Contact Info', 'scrm' ), 'SCRM_Meta_Box_Contact::output', 'scrm_contact', 'normal', 'high' );
