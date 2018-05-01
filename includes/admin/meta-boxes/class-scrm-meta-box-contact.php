@@ -34,6 +34,6 @@ class SCRM_Meta_Box_Contact {
         
         $meta = $_POST[ self::$type ];
         
-        scrm_metabox_custom_fields_save( $post_id, self::$type, $meta );
+        scrm_metabox_custom_fields_save( $post_id, $meta );
     }
 }

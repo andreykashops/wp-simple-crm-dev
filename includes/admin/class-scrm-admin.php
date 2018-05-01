@@ -25,6 +25,7 @@ class SCRM_Admin
         include_once( dirname( __FILE__ ) . '/scrm-meta-box-functions.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-assets.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-leads-page.php' );
+        include_once( dirname( __FILE__ ) . '/class-scrm-admin-contacts-page.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-settings-page.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-menu.php' );
         include_once( dirname( __FILE__ ) . '/class-scrm-admin-post-types.php' );
