@@ -118,10 +118,12 @@
     padding: 5px;
     font-style: italic;
 }
-table.scrm-fields-table p.field-required input{
+table.scrm-fields-table p.field-required input,
+table.scrm-fields-table p.field-sorted input {
     width: 20px;
 }
-table.scrm-fields-table p.field-required span {
+table.scrm-fields-table p.field-required span, 
+table.scrm-fields-table p.field-sorted span {
     display: inline-block;
     margin-top: 5px;
     margin-right: 10px;

@@ -38,7 +38,7 @@ class SCRM_Meta_Box_Lead {
         
         if ( $meta[ 'contact-id' ] != 0 ) {
         
-            scrm_metabox_custom_fields_save( $post_id, self::$type, $meta );
+            scrm_metabox_custom_fields_save( $post_id, $meta );
         }
     }
 }

@@ -53,7 +53,6 @@ function scrm_get_users() {
 /**
  * Option start section
  */
-
 function scrm_optoin_section_begin( $option ) { 
     ?>
     
@@ -83,7 +82,6 @@ function scrm_optoin_section_begin( $option ) {
 /**
  * Option end section
  */
-
 function scrm_option_section_end() {
     ?>
         
@@ -483,7 +481,7 @@ function scrm_option_custom_field( $prefix, $id, $i, $field = [] ) {
             'users',
         ],
     ];
-    $required_values = [
+    $required_values = $sorted_values = [
         'Yes'   => '1',
         'No'    => '0',
     ];
@@ -541,6 +539,10 @@ function scrm_option_custom_field( $prefix, $id, $i, $field = [] ) {
                 $name = sprintf( "%s[%s][required][%u]", $prefix, $id, $i );
                 $value = isset( $field[ 'required' ] ) ? $field[ 'required' ] : 0;
                 scrm_option_custom_field_radio( 'Required', $name, $value, $required_values );
+                
+                $name = sprintf( "%s[%s][sorted][%u]", $prefix, $id, $i );
+                $value = isset( $field[ 'sorted' ] ) ? $field[ 'sorted' ] : 0;
+                scrm_option_custom_field_radio( 'Sorted', $name, $value, $sorted_values );
                 
                 $name = sprintf( "%s[%s][show][%u]", $prefix, $id, $i );
                 $value = isset( $field[ 'show' ] ) ? $field[ 'show' ] : '';

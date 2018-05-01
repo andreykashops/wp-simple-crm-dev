@@ -63,9 +63,9 @@ class SCRM_Meta_Box_Lead_Contact {
      */
     public static function output( $post ) {
 
-        $lead = get_post_meta( $post->ID, self::$type, true );
+        $lead_contact_id = get_post_meta( $post->ID, 'contact-id', true );
         
-        $contact_id = isset( $lead[ 'contact-id' ] ) ? $lead[ 'contact-id' ] : null;
+        $contact_id = isset( $lead_contact_id ) ? $lead_contact_id : null;
         
         scrm_metabox_fields_load( $post->ID, __CLASS__, 0 );
         
@@ -97,9 +97,9 @@ class SCRM_Meta_Box_Lead_Contact {
             
             $lead[ 'contact-id' ] = wp_insert_post( $args );
             
-            scrm_metabox_custom_fields_save( $post_id, self::$type, $lead );
+            scrm_metabox_custom_fields_save( $post_id, $lead );
         } 
         
-        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], SCRM_Meta_Box_Contact::$type, $contact );
+        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], $contact );
     }
 }

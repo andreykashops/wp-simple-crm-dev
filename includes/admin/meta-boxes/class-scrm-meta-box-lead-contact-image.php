@@ -21,9 +21,9 @@ class SCRM_Meta_Box_Lead_Contact_Image {
      */
     public static function output( $post ) {
 
-        $lead = get_post_meta( $post->ID, self::$type, true );
+        $lead_contact_id = get_post_meta( $post->ID, 'contact-id', true );
         
-        $contact_id = !empty( $lead[ 'contact-id' ] ) ? $lead[ 'contact-id' ] : null;
+        $contact_id = isset( $lead_contact_id ) ? $lead_contact_id : null;
         
         scrm_metabox_field_thumbnail( SCRM_Meta_Box_Contact::$type, $contact_id );
     }
@@ -33,12 +33,12 @@ class SCRM_Meta_Box_Lead_Contact_Image {
      */
     public static function save( $post_id ) {
         
-        $lead = get_post_meta( $post_id, self::$type, true );
+        $lead_contact_id = get_post_meta( $post_id, 'contact-id', true );
         
         $contact = $_POST[ SCRM_Meta_Box_Contact::$type ];
         
         $contact[ 'thumbnail-id' ] = sanitize_key( $contact[ 'thumbnail-id' ] );
         
-        update_post_meta( $lead[ 'contact-id' ], '_thumbnail_id', $contact[ 'thumbnail-id' ] );
+        update_post_meta( $lead_contact_id, '_thumbnail_id', $contact[ 'thumbnail-id' ] );
     }
 }

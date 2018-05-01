@@ -34,7 +34,7 @@ class SCRM_Post_Types
                     'labels' => array(
                         'name' => __('Leads', 'scrm'),
                         'singular_name' => __('Lead', 'scrm'),
-                        'all_items' => __('All leads', 'scrm'),
+                        'all_items' => __('Leads', 'scrm'),
                         'menu_name' => _x('Leads', 'Admin menu name', 'scrm'),
                         'add_new' => __('Add New', 'scrm'),
                         'add_new_item' => __('Add new lead', 'scrm'),
@@ -69,6 +69,7 @@ class SCRM_Post_Types
                     'query_var'           => true,
                     'supports'            => $supports,
                     'has_archive'         => false,
+                    'show_in_menu'        => current_user_can( 'scrm_manage' ) ? 'scrm' : true,
                     'show_in_nav_menus'   => true,
                     'show_in_rest'        => true,
                 )
@@ -81,7 +82,7 @@ class SCRM_Post_Types
                     'labels' => array(
                         'name' => __('Contacts', 'scrm'),
                         'singular_name' => __('Contact', 'scrm'),
-                        'all_items' => __('All contacts', 'scrm'),
+                        'all_items' => __('Contacts', 'scrm'),
                         'menu_name' => _x('Contacts', 'Admin menu name', 'scrm'),
                         'add_new' => __('Add New', 'scrm'),
                         'add_new_item' => __('Add new contact', 'scrm'),
@@ -116,6 +117,7 @@ class SCRM_Post_Types
                     'query_var' => false,
                     'supports' => $supports,
                     'has_archive' => false,
+                    'show_in_menu' => current_user_can( 'scrm_manage' ) ? 'scrm' : true,
                     'show_in_nav_menus' => true,
                     'show_in_rest' => true,
                 )

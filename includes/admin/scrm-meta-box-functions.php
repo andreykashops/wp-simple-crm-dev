@@ -243,8 +243,6 @@ function scrm_metabox_field_thumbnail( $prefix, $post_id ) {
  */
 function scrm_metabox_fields_load( $post_id, $class, $block = 1, $hide = [] ) {
             
-    $meta = get_post_meta( $post_id, $class::$type, true );
-        
     $prefix = scrm_prefix( $class::$type );
     
     $fields = $class::fields();
@@ -259,8 +257,11 @@ function scrm_metabox_fields_load( $post_id, $class, $block = 1, $hide = [] ) {
             <div class="<?php scrm_metabox_group( $prefix, $group ); ?>">
 
                 <?php
-                foreach ( $items as $lable => $id ) 
-                    $class::metabox( $prefix, $id, isset( $meta[ $id ] ) ? $meta[ $id ] : '', $lable );
+                foreach ( $items as $lable => $id ) {
+                    
+                    $meta = get_post_meta( $post_id, $id, true );
+                    $class::metabox( $prefix, $id, isset( $meta ) ? $meta : '', $lable );
+                }
                 ?>
 
             </div>
@@ -297,7 +298,7 @@ function scrm_metabox_fields_save( $post_id, $class, $meta ) {
  */
 function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
 
-    $meta = get_post_meta( $post_id, $prefix, true );
+    #$meta = get_post_meta( $post_id, $prefix, true );
     
     $option = get_option( str_replace( '_', '_settings_', $prefix ) );
     
@@ -320,7 +321,8 @@ function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
                             $label = $field[ 'label' ];
                             $id = $field[ 'name' ];
                             $type = $field[ 'type' ];
-                            $value = isset( $meta[ $id ] ) ? $meta[ $id ] : $field[ 'value' ];
+                            $meta = get_post_meta( $post_id, $id, true );
+                            $value = !empty( $meta ) ? $meta : $field[ 'value' ];
                             $other = '';
 
                             if ( $field[ 'required' ] )
@@ -383,12 +385,9 @@ function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
 /**
  * Metabox custom fields save
  */
-function scrm_metabox_custom_fields_save( $post_id, $prefix, $meta ) {
+function scrm_metabox_custom_fields_save( $post_id, $meta ) {
     
-    foreach ( $meta as $key => $value ) {
-        
-        $meta[ $key ] = sanitize_text_field( $value );
-    }
+    foreach ( $meta as $key => $value ) 
+        update_post_meta( $post_id, $key, sanitize_text_field( $value ) );
     
-    update_post_meta( $post_id, $prefix, $meta );
 }
