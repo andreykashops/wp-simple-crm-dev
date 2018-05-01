@@ -38,7 +38,10 @@ abstract class SCRM_Admin_List_Table {
         if ( $this->list_table_type ) {
 
             $settings = get_option( str_replace( '_', '_settings_', $this->list_table_type ) );
-        
+            
+            if ( empty( $settings ) )
+                return;
+            
             $ignored = $this->define_ignored_columns();
 
             $this->list_table_columns[ 'image' ] = __( 'Image', 'scrm' );
