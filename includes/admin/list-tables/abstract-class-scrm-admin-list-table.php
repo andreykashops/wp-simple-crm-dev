@@ -52,6 +52,7 @@ abstract class SCRM_Admin_List_Table {
                     $this->list_table_columns[ $field[ 'name' ] ] = $field[ 'label' ];
             }
             
+            add_filter( 'view_mode_post_types', [ $this, 'disable_view_mode' ] );
             add_filter( 'request', [ $this, 'request_query' ] );
             add_filter( 'post_row_actions', [ $this, 'row_actions' ], 100, 2 );
             add_filter( 'default_hidden_columns', [ $this, 'default_hidden_columns' ], 10, 2 );
@@ -61,6 +62,16 @@ abstract class SCRM_Admin_List_Table {
         }
     }
     
+    /**
+     * Remove support "View Mode" switching
+     */
+    public function disable_view_mode( $post_types ) {
+        
+        unset( $post_types[ $this->list_table_type ] );
+        
+        return $post_types;
+    }
+
     /**
      * Handle any filters
      */

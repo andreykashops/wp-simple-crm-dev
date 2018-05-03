@@ -100,6 +100,7 @@ final class SCRM
     {
         register_activation_hook(SCRM_PLUGIN_FILE, array('SCRM_Install', 'install'));
 //        SCRM_Install::install(); // @todo delete this
+        register_deactivation_hook(SCRM_PLUGIN_FILE, array('SCRM_Install', 'deactivation'));
 
         add_action('init', array($this, 'init'), 0);
     }
