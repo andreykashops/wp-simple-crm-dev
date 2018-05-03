@@ -142,6 +142,10 @@ class SCRM_Admin_Settings_Page
                     $value = !empty( $temp[ $id ] ) ? $temp[ $id ] : $option[ 'value' ];
                     scrm_option_field_input($prefix, $id, $type, $value, $label, $desc, $other);
                     break;
+                case 'checkbox':
+                    $value = isset( $temp[ $id ] ) ? $temp[ $id ] : $option[ 'value' ];
+                    scrm_option_field_input($prefix, $id, $type, $value, $label, $desc, $other);
+                    break;
                 case 'custom-fields':
                     $fields = !empty( $temp[ $id ] ) ? $temp[ $id ] : $option[ 'fields' ];
                     scrm_option_custom_fields( $prefix, $id, $fields, $label, $desc );
@@ -181,6 +185,10 @@ class SCRM_Admin_Settings_Page
                 
                 case 'text':
                     $data[ $id ] = $temp[ $id ];
+                    break;
+                
+                case 'checkbox';
+                    $data[ $id ] = isset( $temp[ $id ] ) ? $temp[ $id ] : '0';
                     break;
                 
                 case 'custom-fields':

@@ -52,10 +52,95 @@ class SCRM_Install
     }
 
     /**
+     * Deactivate SCRM this function is temporary
+     */
+    public static function deactivation() {
+        
+        if ( get_transient( 'scrm_installing' ) ) 
+            delete_transient( 'scrm_installing' );
+        
+        $options = get_option( 'scrm_settings_general' );
+        
+        if ( !$options[ 'remove-all' ] ) 
+            return false;
+        
+        $args = [
+            'general', 
+            'lead', 
+            'contact', 
+            'order',
+        ];
+        
+        foreach ( $args as $value ) 
+            delete_option( sprintf( 'scrm_settings_%s', $value ) );
+        
+        $args = [
+            'screen_layout_scrm_lead',
+            'screen_layout_scrm_contact',
+            'edit_scrm_lead_per_page',
+            'edit_scrm_contact_per_page',
+            'manageedit-scrm_leadcolumnshidden',
+            'manageedit-scrm_contactcolumnshidden',
+        ];
+        
+        $users = get_users();
+        
+        foreach ( $users as $user ) {
+            
+            foreach ( $args as $value ) 
+                delete_user_meta( $user->data->ID, $value );
+        }
+        
+        $types = [
+            'scrm_lead',
+            'scrm_contact',
+        ];
+        
+        foreach ( $types as $type ) {
+            
+            $posts = get_posts( [ 'post_type' => $type ] );
+            wp_reset_postdata();
+
+            foreach ( $posts as $post ) {
+                
+                $attachment_id = get_post_thumbnail_id( $post->ID );
+                wp_delete_post( $attachment_id );
+                wp_delete_post( $post->ID );
+            }
+        }
+    }
+    
+    /**
      * Default plugin options
      */
-    private static function create_options()
-    {
+    private static function create_options() {
+        
+        // Include settings so that we can run through defaults.
+        include_once dirname( __FILE__ ) . '/admin/class-scrm-admin-settings-page.php';
+
+        $settings = SCRM_Admin_Settings_Page::settings_pages();
+        
+        foreach ( $settings as $options ) {
+            
+            if ( ! method_exists( $options, 'get_settings' ) ) 
+                    continue;
+            
+            $data = [];
+            
+            foreach ( $options->get_settings() as $option ) {
+                    
+                switch ( $option[ 'type' ] ) {
+                    case 'text':
+                        $data[ $option[ 'id' ] ] = $option[ 'value' ];
+                        break;
+                    case 'custom-fields':
+                        $data[ $option[ 'id' ] ] = $option[ 'fields' ];
+                        break;
+                }
+            }
+            
+            add_option( 'scrm_settings_' . $options->id, $data );
+        }
     }
 
     /**
@@ -63,8 +148,8 @@ class SCRM_Install
      */
     private static function create_tables()
     {
+        
     }
-
 
     /**
      * Create roles and capabilities.
@@ -145,8 +230,108 @@ class SCRM_Install
     /**
      * Crate default leads and contacts for example.
      */
-    private static function create_default_data()
-    {
+    private static function create_default_data() {
+        
+        $user_id = get_current_user_id();
+        
+        $post_data = [
+		'post_author' => $user_id,
+		'post_title' => 'Имя Фамилия Отчество',
+		'post_status' => 'publish',
+		'post_type' => 'scrm_contact',
+		'comment_status' => 'closed',
+		'ping_status' => 'closed',
+            'meta_input' => [
+                'first-name' => 'Имя',
+                'last-name' => 'Фамилия',
+                'middle-name' => 'Отчество',
+                'phone' => '123456789',
+                'email' => 'client@mail.ru',
+                'birthday' => '1970-01-01',
+                'site' => 'Сайт',
+                'company' => 'Компания',
+                'position' => 'Должность',
+                'facebook' => 'Фейсбук',
+                'vk' => 'Вконтакте',
+                'twitter' => 'Твиттер',
+                'ok' => 'Однокласники',
+                'country' => 'Страна',
+                'city' => 'Город',
+                'street' => 'Улица',
+                'building' => 'Здание',
+                'office' => 'Офис',
+            ],
+	];
+        
+        $contact_id = wp_insert_post( $post_data );
+        
+        $attachment_id = self::create_attachment( 'tortoise.jpg', $contact_id );
+
+        set_post_thumbnail( $contact_id, $attachment_id );
+
+        $post_data = [
+		'post_author' => $user_id,
+		'post_title' => 'Лид №1',
+		'post_status' => 'publish',
+		'post_type' => 'scrm_lead',
+		'comment_status' => 'closed',
+		'ping_status' => 'closed',
+            'meta_input' => [
+                'status' => '1%',
+                'source' => 'phone',
+                'price' => '10000',
+                'currency' => 'rub',
+                'responsible' => $user_id,
+                'access-for-all' => '1',
+                'about-status' => 'Start working',
+                'about-source' => 'Only phone',
+                'comment' => 'No comments' ,
+                'contact-id' => $contact_id,
+            ],
+	];
+        
+        $lead_id = wp_insert_post( $post_data );
+        
+        $attachment_id = self::create_attachment( 'stopwatch.jpg', $lead_id );
+
+        set_post_thumbnail( $lead_id, $attachment_id );
+    }
+    
+    /**
+     * Create attachment
+     */
+    protected static function create_attachment( $name, $post_id ) {
+        
+        $file = SCRM_ABSPATH . 'assets/images/' . $name;
+        
+        $upload = wp_upload_bits( basename( $file ), null, file_get_contents( $file ) );
+            
+        if ( !empty( $upload[ 'error' ] ) ) 
+            return false;
+        
+        $file_path = $upload[ 'file' ];
+        $file_name = basename( $file_path );
+        $file_type = $upload[ 'type' ];
+
+        $wp_upload_dir = wp_upload_dir();
+
+        $attachment = [
+            'guid'           => $wp_upload_dir[ 'url' ] . '/' . $file_name,
+            'post_mime_type' => $file_type,
+            'post_title'     => preg_replace( '/\.[^.]+$/', '', $file_name ),
+            'post_contatn'   => '',
+            'post_status'    => 'inherit',
+        ];
+
+        $attachment_id = wp_insert_attachment( $attachment, $file_path, $post_id );
+
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );
+
+        wp_update_attachment_metadata( $attachment_id, $attachment_data );
+        
+        return $attachment_id;
     }
 
     /**
@@ -157,7 +342,7 @@ class SCRM_Install
      */
     public static function plugin_action_links( $links ) {
         $action_links = array(
-            'settings' => '<a href="' . admin_url( 'admin.php?page=scrm-settings' ) . '" aria-label="' . esc_attr__( 'View WP Simple CRM settings', 'scrm' ) . '">' . esc_html__( 'Settings', 'scrm' ) . '</a>',
+            'settings' => '<a href="' . admin_url( 'admin.php?page=scrm_settings' ) . '" aria-label="' . esc_attr__( 'View WP Simple CRM settings', 'scrm' ) . '">' . esc_html__( 'Settings', 'scrm' ) . '</a>',
         );
 
         return array_merge( $action_links, $links );

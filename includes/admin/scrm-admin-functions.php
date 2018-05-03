@@ -133,6 +133,13 @@ function scrm_option_field_input( $prefix, $id, $type, $value, $label, $desc, $o
             <input id="<?php echo $id; ?>" 
                    type="<?php echo $type; ?>" 
                    name="<?php echo $name; ?>" 
+                   <?php 
+                   if ( $type == 'checkbox') {
+                       
+                       checked( $value, 1); 
+                       $value = '1';
+                   }
+                   ?>
                    value="<?php echo $value; ?>" 
                    <?php echo $other; ?>/>
             

@@ -15,7 +15,7 @@ abstract class SCRM_Settings_Page {
     /**
      * Setting page id
      */
-    protected $id = '';
+    public $id = '';
 
     /**
      * Setting page label

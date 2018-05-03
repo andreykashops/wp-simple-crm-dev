@@ -82,6 +82,7 @@ class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
     protected function define_hidden_columns() {
         
         return [
+            'site',
             'position',
             'facebook',
             'vk',

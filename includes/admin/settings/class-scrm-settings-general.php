@@ -36,10 +36,17 @@ class SCRM_Settings_General extends SCRM_Settings_Page {
             ],
             [
                 'type'    => 'text',
-                'label'   => __( 'Currency' ),
-                'desc'    => __ ( 'Input default currency type.' ),
+                'label'   => __( 'Currency', 'scrm' ),
+                'desc'    => __ ( 'Input default currency type.', 'scrm' ),
                 'id'      => 'currency',
-                'value' => 'UAH',
+                'value' => 'USD',
+            ],
+            [
+                'type'    => 'checkbox',
+                'label'   => __( 'Uninstall control', 'scrm' ),
+                'desc'    => __ ( 'Remove all plugin data on uninstall.', 'scrm' ),
+                'id'      => 'remove-all',
+                'value' => '1',
             ],
             [
                 'type' => 'end',
