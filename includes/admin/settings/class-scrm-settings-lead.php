@@ -28,30 +28,6 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
      */
     public function get_settings() {
 
-        $status = [
-            '0%'      => 'Not Processed',
-            '1%'      => 'Start',
-            '25%'     => 'Progress 25%',
-            '50%'     => 'Progress 50%',
-            '75%'     => 'Progress 75%',
-            '100%'    => 'End',
-            'success' => 'Success',
-            'failure' => 'Failure',
-        ];
-
-        $source = [
-            'phone' => 'Phone',
-            'email' => 'Email',
-            'other' => 'Other',
-        ];
-
-        $currency = [
-            'euro' => 'EURO',
-            'usd'  => 'USD',
-            'uah'  => 'UAH',
-            'rub'  => 'RUB',
-        ];
-
         $responsible = [];
 
         $settings = [
@@ -70,8 +46,8 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
                         'label'    => 'Status',
                         'name'     => 'status',
                         'type'     => 'select',
-                        'value'    => 'not_processed',
-                        'values'   => $status,
+                        'value'    => '0%',
+                        'values'   => scrm_list_status(),
                         'required' => '0',
                         'sorted'   => '1',
                         'show'     => '1',
@@ -82,7 +58,7 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
                         'name'     => 'source',
                         'type'     => 'select',
                         'value'    => 'phone',
-                        'values'   => $source,
+                        'values'   => scrm_list_source(),
                         'required' => '0',
                         'sorted'   => '0',
                         'show'     => '1',
@@ -105,7 +81,7 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
                         'name'     => 'currency',
                         'type'     => 'select',
                         'value'    => 'usd',
-                        'values'   => $currency,
+                        'values'   => scrm_list_currency(),
                         'required' => '0',
                         'sorted'   => '0',
                         'show'     => '1',

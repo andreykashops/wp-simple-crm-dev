@@ -39,7 +39,7 @@ class SCRM_Meta_Box_Lead_Contact {
 
         switch ( $id ) {
             case 'contact-id':
-                $items = scrm_get_contacts();
+                $items = scrm_list_contacts();
                 break;
         }
         
