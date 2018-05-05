@@ -44,13 +44,23 @@ abstract class SCRM_Admin_List_Table {
             
             $ignored = $this->define_ignored_columns();
 
-            $this->list_table_columns[ 'image' ] = __( 'Image', 'scrm' );
+            $this->list_table_columns[ 'image' ] = 'Image';
+            
+            if ( $this->list_table_type == 'scrm_lead' )
+                $this->list_table_columns[ 'title' ] = 'Lead';
+            elseif ( $this->list_table_type == 'scrm_contact' )
+                $this->list_table_columns[ 'title' ] = 'Contact';
 
             foreach ( $settings[ $this->list_table_type ] as $field ) {
 
-                if ( $field[ 'show' ] == 1 && !in_array( $field[ 'name' ], $ignored ) )
+                if ( isset( $field[ 'show' ] ) && $field[ 'show' ] == 1 && !in_array( $field[ 'name' ], $ignored ) )
                     $this->list_table_columns[ $field[ 'name' ] ] = $field[ 'label' ];
             }
+        
+            if ( $this->list_table_type == 'scrm_lead' )
+               $this->list_table_columns[ 'contact-id' ] = 'Contact';
+            
+            $this->list_table_columns[ 'date' ] = 'Date';
             
             add_filter( 'view_mode_post_types', [ $this, 'disable_view_mode' ] );
             add_filter( 'request', [ $this, 'request_query' ] );
@@ -79,9 +89,8 @@ abstract class SCRM_Admin_List_Table {
         
         global $typenow;
         
-        if ( $this->list_table_type == $typenow ) {
+        if ( $this->list_table_type == $typenow ) 
             return $this->query_filters( $query_vars );
-        }
 
         return $query_vars;
     }
@@ -114,8 +123,6 @@ abstract class SCRM_Admin_List_Table {
 
         $settings = get_option( str_replace( '_', '_settings_', $this->list_table_type ) );
         
-        $ignored = $this->define_ignored_columns();
-        
         $args = [];
         
         foreach ( $settings[ $this->list_table_type ] as $field ) {
@@ -123,6 +130,9 @@ abstract class SCRM_Admin_List_Table {
             if ( $field[ 'sorted' ] == 1 )
                 $args[ $field[ 'name' ] ] = $field[ 'name' ];
         }
+        
+        if ( $this->list_table_type == 'scrm_lead' )
+            $args[ 'contact-id' ] = 'contact-id';
 
         return wp_parse_args( $args, $columns );
     }
@@ -135,14 +145,10 @@ abstract class SCRM_Admin_List_Table {
         if ( empty( $columns ) && !is_array( $columns ) )
             $columns = [];
 
-        unset( $columns[ 'comments' ], $columns[ 'date' ] );
+        unset( $columns[ 'title' ], $columns[ 'comments' ], $columns[ 'date' ] );
         
-        foreach ( $this->list_table_columns as $key => $value ) {
-            
+        foreach ( $this->list_table_columns as $key => $value ) 
             $columns[ $key ] = __( $value, 'scrm' );
-        }
-        
-        $columns[ 'date' ] = __( 'Date', 'scrm' );
 
         return $columns;
     }
@@ -152,10 +158,8 @@ abstract class SCRM_Admin_List_Table {
      */
     public function render_columns( $column, $post_id ) {
         
-        if ( in_array( $column, array_keys( $this->list_table_columns ) ) ) {
-            
+        if ( in_array( $column, array_keys( $this->list_table_columns ) ) ) 
             $this->render_column( $column, $post_id );
-        }
     }
     
     /**
@@ -166,7 +170,7 @@ abstract class SCRM_Admin_List_Table {
         $img_url = get_the_post_thumbnail_url( $post_id, 'thumbnail' );
         
         if ( !empty( $img_url ) ) 
-            $image = '<img src="' . $img_url . '" alt="..." height="75"/>';
+            $image = '<img src="' . $img_url . '" alt="..." width="50" height="50"/>';
         else 
             $image = 'No Image';
         

@@ -354,7 +354,7 @@ function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
                                     scrm_metabox_field_input( $prefix, $id, $value, $label, $type );
                                     break;
                                 case 'users':
-                                    $items = scrm_get_users();
+                                    $items = scrm_list_users();
                                     scrm_metabox_field_select( $prefix, $id, $value, $label, $items, false );
                                     break;
                             }

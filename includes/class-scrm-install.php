@@ -61,7 +61,7 @@ class SCRM_Install
         
         $options = get_option( 'scrm_settings_general' );
         
-        if ( !$options[ 'remove-all' ] ) 
+        if ( !isset( $options[ 'remove-all' ] ) || !$options[ 'remove-all' ] ) 
             return false;
         
         $args = [
@@ -116,6 +116,7 @@ class SCRM_Install
     private static function create_options() {
         
         // Include settings so that we can run through defaults.
+        include_once dirname( __FILE__ ) . '/admin/scrm-admin-functions.php';
         include_once dirname( __FILE__ ) . '/admin/class-scrm-admin-settings-page.php';
 
         $settings = SCRM_Admin_Settings_Page::settings_pages();
@@ -131,6 +132,7 @@ class SCRM_Install
                     
                 switch ( $option[ 'type' ] ) {
                     case 'text':
+                    case 'checkbox':
                         $data[ $option[ 'id' ] ] = $option[ 'value' ];
                         break;
                     case 'custom-fields':
@@ -279,7 +281,7 @@ class SCRM_Install
             'meta_input' => [
                 'status' => '1%',
                 'source' => 'phone',
-                'price' => '10000',
+                'price' => '1000',
                 'currency' => 'rub',
                 'responsible' => $user_id,
                 'access-for-all' => '1',

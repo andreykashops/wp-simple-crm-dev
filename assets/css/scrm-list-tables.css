@@ -1,0 +1,24 @@
+/**
+ * Project manager: Andrey Pavluk
+ * Created by Roman Hofman
+ * Date: 04.05.2018
+ */
+
+th#image {
+    width: 60px;
+}
+th#title {
+    width: 230px;
+}
+td.image {
+    text-align: center;
+}
+td .currency {
+    font-style: italic;
+}
+td.contact-id ul {
+    margin: 0;
+}
+td.contact-id li {
+    
+}

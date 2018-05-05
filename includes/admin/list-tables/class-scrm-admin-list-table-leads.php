@@ -71,6 +71,7 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
     protected function define_ignored_columns() {
         
         return [
+            'currency',
             'access-for-all',
         ];
     }
@@ -96,34 +97,75 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
         
         $meta = get_post_meta( $post_id, $column, true );
         
-        $value = '';
+        $content = '';
         
         switch ( $column ){
             case 'status':
-            case 'source':
-            case 'currency':
-                $settings = get_option( str_replace( '_', '_settings_', $this->list_table_type ) );
-        
-                foreach ( $settings[ $this->list_table_type ] as $field ) {
+                $list = scrm_list_status();
+                ?>
+
+                <select>
                     
-                    if ( $field[ 'name' ] == $column ) 
-                        $value = $field[ 'values' ][ $meta ];
-                }
+                    <?php foreach ( $list as $key => $value ) : ?>
+                                            
+                        <option value="<?php echo $key; ?>" <?php selected( $value, $list[ $meta ] ) ?>>
+                            <?php echo $value; ?>
+                        </option>
+                        
+                    <?php endforeach; ?>
+                    
+                </select>
+
+                <?php
+                return;;
+            case 'source':
+                $list = scrm_list_source();
+                $content = $list[ $meta ];
+                break;
+            case 'price':
+                $content = sprintf( '%s <span class="currency">%s</span>', $meta, strtoupper( get_post_meta( $post_id, 'currency', true ) ) );
                 break;
             case 'responsible':
-                $value = get_user_by( 'id', $meta )->data->display_name;
+                $content = get_user_by( 'id', $meta )->data->display_name;
                 break;
             case 'image':
-                $value = $this->get_image( $post_id );
+                $content = $this->get_image( $post_id );
                 break;
+            case 'contact-id':
+                $data = get_post_meta( $meta, '', true );
+                ?>
+
+                <ul>
+                    <li>
+                        <?php printf( '%s %s %s', $data[ 'first-name' ][0], $data[ 'last-name' ][0], $data[ 'middle-name' ][0] ); ?>
+                    </li>
+                    <li>
+                        <?php 
+                        switch ( get_post_meta( $post_id, 'source', true ) ) {
+                            case 'phone':
+                                echo $data[ 'phone' ][0];
+                                break;
+                            case 'email':
+                                echo $data[ 'email' ][0];
+                                break;
+                            case 'other':
+                                echo $data[ 'site' ][0];
+                                break;
+                        }
+                        ?>
+                    </li>
+                </ul>
+                
+                <?php
+                return;
             default :
-                $value = $meta;
+                $content = $meta;
                 break;
         }
         ?>
 
             <span class="na">
-                <?php echo $value; ?>
+                <?php echo $content; ?>
             </span>
 
         <?php

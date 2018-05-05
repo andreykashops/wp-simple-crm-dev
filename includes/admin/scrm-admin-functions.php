@@ -18,9 +18,69 @@ function scrm_prefix( $prefix ) {
 }
 
 /**
+ * Status list
+ */
+function scrm_list_status() {
+
+    $list = [
+        '0%'      => 'Not Processed',
+        '1%'      => 'Start',
+        '25%'     => 'Progress 25%',
+        '50%'     => 'Progress 50%',
+        '75%'     => 'Progress 75%',
+        '100%'    => 'End',
+        'success' => 'Success',
+        'failure' => 'Failure',
+    ];
+
+    return $list;
+}
+
+/**
+ * Source list
+ */
+function scrm_list_source() {
+
+    $list = [
+        'phone' => 'Phone',
+        'email' => 'Email',
+        'other' => 'Other',
+    ];
+
+    return $list;
+}
+
+/**
+ * Currency list
+ */
+function scrm_list_currency() {
+
+    $list = [
+        'euro' => 'EURO',
+        'usd'  => 'USD',
+        'uah'  => 'UAH',
+        'rub'  => 'RUB',
+    ];
+
+    return $list;
+}
+
+/**
+ * Country list
+ */
+function scrm_list_country() {
+    
+    $list = [
+        
+    ];
+    
+    return $list;
+}
+
+/**
  * Get contacts
  */
-function scrm_get_contacts() {
+function scrm_list_contacts() {
     
     $list[ 0 ] = __( 'Create New', 'scrm' );
     
@@ -37,7 +97,7 @@ function scrm_get_contacts() {
 /**
  * Get users
  */
-function scrm_get_users() {
+function scrm_list_users() {
     
     $list = [];
     
@@ -432,7 +492,7 @@ function scrm_option_custom_field_values( $prefix, $id, $i, $field ) {
                     break;
                 
                 case 'users':
-                    $values = scrm_get_users();
+                    $values = scrm_list_users();
                     scrm_option_custom_field_choices( $prefix, $id, $i, $value, $values, true );
                     $help = 'For users field';
                     break;

@@ -30,6 +30,7 @@ class SCRM_AJAX {
             'get_custom_field'                      => false,
             'get_custom_field_input'                => false,
             'refresh_custom_field_values'           => false,
+            'update_post_meta'                      => false,
         ];
         
         foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -99,6 +100,27 @@ class SCRM_AJAX {
         
         wp_die();
     }
+    
+    /**
+     * Change lead status
+     */
+    public static function update_post_meta() {
+        
+        $data = isset( $_POST[ 'data' ] ) ? $_POST[ 'data' ] : '';
+        
+        if ( !empty( $data ) ) {
+        
+            $post_id = sanitize_key( $data[ 'post_id' ] );
+            $status = sanitize_text_field( $data[ 'status' ] );
+            
+            update_post_meta( $post_id, 'status', $status );
+
+            wp_die(1);
+        } else {
+            
+            wp_die(0);
+        }
+    } 
 }
 
 SCRM_AJAX::init();
