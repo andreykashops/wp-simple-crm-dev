@@ -39,6 +39,7 @@ class SCRM_Admin_Assets {
             
             case 'edit-scrm_lead':
             case 'edit-scrm_contact':
+            case 'toplevel_page_scrm':
                 wp_enqueue_style( 'scrm-admin-list-tables' );
                 break;
             
@@ -65,15 +66,24 @@ class SCRM_Admin_Assets {
         
         wp_register_script( 'scrm-admin-edit-lead', SCRM()->plugin_url() . '/assets/js/scrm-edit-lead' . $suffix . '.js' );
         wp_register_script( 'scrm-admin-lead-page', SCRM()->plugin_url() . '/assets/js/scrm-lead-page' . $suffix . '.js' );
+        wp_register_script( 'scrm-admin-main-page', SCRM()->plugin_url() . '/assets/js/scrm-main-page' . $suffix . '.js', [ 'jquery', 'jquery-ui-sortable' ], SCRM()->version, true );
         wp_register_script( 'scrm-admin-settings-page', SCRM()->plugin_url() . '/assets/js/scrm-settings-page' . $suffix . '.js', [ 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris' ], SCRM()->version, true );
         
         switch ( $screen_id ) {
+            
             case 'edit-scrm_lead':
                 wp_enqueue_script( 'scrm-admin-edit-lead' );
                 break;
+            
             case 'scrm_lead':
                 wp_enqueue_script( 'scrm-admin-lead-page' );
                 break;
+            
+            case 'toplevel_page_scrm':
+                wp_enqueue_script( 'scrm-admin-main-page' );
+                wp_enqueue_script( 'scrm-admin-edit-lead' );
+                break;
+            
             case 'crm_page_scrm_settings':
                 wp_enqueue_script( 'scrm-admin-settings-page' );
                 break;

@@ -6,28 +6,34 @@
 
 jQuery(document).ready(function ($) {
     
-    var el = $('td.status');
-    var post_id = el.parent('tr').attr('id').split('-')[1];
+    var list = $('#the-list').find('tr');
     
-    el.find('select').change(function () {
+    $.each( list, function() {
         
-        var status = $(this).find(':selected').val();
+        var post_id = $(this).attr('id').split('-')[1];
         
-        $.post(
-                '/wp-admin/admin-ajax.php',
-                {
-                    action: 'scrm_update_post_meta',
-                    data: {
-                        post_id: post_id,
-                        status: status
-                    }
-                },
-                function (response) {
+        $(this).on('change', 'select.edit-status', function () {
 
-                    if (response == 0) 
-                        alert( 'Error : Status not changed.' );
-                },
-                'html'
-        );
+            var status = $(this).find(':selected').val();
+
+            $.post(
+                    '/wp-admin/admin-ajax.php',
+                    {
+                        action: 'scrm_update_data',
+                        data: {
+                            type: 'post',
+                            id: post_id,
+                            key: 'status',
+                            value: status
+                        }
+                    },
+                    function (response) {
+
+                        if (response == 0) 
+                            alert( 'Error : Status not changed.' );
+                    },
+                    'html'
+            );
+        });
     });
 });
