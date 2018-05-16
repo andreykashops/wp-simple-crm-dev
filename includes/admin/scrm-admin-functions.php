@@ -20,7 +20,7 @@ function scrm_prefix( $prefix ) {
 /**
  * Status list
  */
-function scrm_list_status() {
+function scrm_list_status( $value = null ) {
 
     $list = [
         '0%'      => 'Not Processed',
@@ -33,13 +33,16 @@ function scrm_list_status() {
         'failure' => 'Failure',
     ];
 
-    return $list;
+    if ( is_null( $value ) )
+        return $list;
+    else
+        return $list[ $value ];
 }
 
 /**
  * Source list
  */
-function scrm_list_source() {
+function scrm_list_source( $value = null ) {
 
     $list = [
         'phone' => 'Phone',
@@ -47,13 +50,16 @@ function scrm_list_source() {
         'other' => 'Other',
     ];
 
-    return $list;
+    if ( is_null( $value ) )
+        return $list;
+    else
+        return $list[ $value ];
 }
 
 /**
  * Currency list
  */
-function scrm_list_currency() {
+function scrm_list_currency( $value = null ) {
 
     $list = [
         'euro' => 'EURO',
@@ -62,19 +68,25 @@ function scrm_list_currency() {
         'rub'  => 'RUB',
     ];
 
-    return $list;
+    if ( is_null( $value ) )
+        return $list;
+    else
+        return $list[ $value ];
 }
 
 /**
  * Country list
  */
-function scrm_list_country() {
+function scrm_list_country( $value = null ) {
     
     $list = [
         
     ];
     
-    return $list;
+    if ( is_null( $value ) )
+        return $list;
+    else
+        return $list[ $value ];
 }
 
 /**

@@ -16,11 +16,15 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
 
     /**
      * Post type
+     * 
+     * @var string
      */
     protected $list_table_type = 'scrm_lead';
 
     /**
      * Table columns
+     * 
+     * @var array
      */
     protected $list_table_columns = [];
     
@@ -34,6 +38,10 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
 
     /**
      * Handle any custom filters
+     * 
+     * @param array $query_vars
+     * 
+     * @return array $qurey_vars
      */
     protected function query_filters( $query_vars ) {
         
@@ -46,6 +54,7 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
             
             switch ( $column ) {
                 case 'price':
+                case 'status':
                     $tmp_vars = [
                         'meta_key' => $column,
                         'orderby'  => 'meta_value_num',
@@ -67,6 +76,8 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
 
     /**
      * Define ignored columns
+     * 
+     * @return array
      */
     protected function define_ignored_columns() {
         
@@ -78,6 +89,8 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
     
     /**
      * Define hidden columns
+     * 
+     * @return array
      */
     protected function define_hidden_columns() {
         
@@ -92,6 +105,9 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
 
     /**
      * Render column
+     * 
+     * @param string $column
+     * @param int $post_id
      */
     protected function render_column( $column, $post_id ) {
         
@@ -104,7 +120,7 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
                 $list = scrm_list_status();
                 ?>
 
-                <select>
+                <select class="edit-status">
                     
                     <?php foreach ( $list as $key => $value ) : ?>
                                             
@@ -126,7 +142,9 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
                 $content = sprintf( '%s <span class="currency">%s</span>', $meta, strtoupper( get_post_meta( $post_id, 'currency', true ) ) );
                 break;
             case 'responsible':
-                $content = get_user_by( 'id', $meta )->data->display_name;
+                $user_name = get_user_by( 'id', $meta )->data->display_name;
+                $user_link = get_edit_user_link( $meta );
+                $content = sprintf( '<a href="%s">%s</a>', $user_link, $user_name );
                 break;
             case 'image':
                 $content = $this->get_image( $post_id );

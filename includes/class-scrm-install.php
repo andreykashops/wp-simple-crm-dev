@@ -64,31 +64,33 @@ class SCRM_Install
         if ( !isset( $options[ 'remove-all' ] ) || !$options[ 'remove-all' ] ) 
             return false;
         
-        $args = [
+        $options = [
             'general', 
             'lead', 
             'contact', 
             'order',
+            'default_names',
         ];
         
-        foreach ( $args as $value ) 
-            delete_option( sprintf( 'scrm_settings_%s', $value ) );
+        foreach ( $options as $option ) 
+            delete_option( sprintf( 'scrm_settings_%s', $option ) );
         
-        $args = [
+        $options = [
             'screen_layout_scrm_lead',
             'screen_layout_scrm_contact',
             'edit_scrm_lead_per_page',
             'edit_scrm_contact_per_page',
             'manageedit-scrm_leadcolumnshidden',
             'manageedit-scrm_contactcolumnshidden',
+            'scrm-multi-table',
         ];
         
         $users = get_users();
         
         foreach ( $users as $user ) {
             
-            foreach ( $args as $value ) 
-                delete_user_meta( $user->data->ID, $value );
+            foreach ( $options as $option ) 
+                delete_user_meta( $user->data->ID, $option );
         }
         
         $types = [
@@ -98,7 +100,7 @@ class SCRM_Install
         
         foreach ( $types as $type ) {
             
-            $posts = get_posts( [ 'post_type' => $type ] );
+            $posts = get_posts( [ 'numberposts' => -1, 'post_type' => $type ] );
             wp_reset_postdata();
 
             foreach ( $posts as $post ) {
@@ -234,75 +236,51 @@ class SCRM_Install
      */
     private static function create_default_data() {
         
+        $attachment_id = [];
+        $attachment_id[ 'tortoise' ] = self::create_attachment( 'tortoise.jpg' );
+        $attachment_id[ 'stopwatch' ] = self::create_attachment( 'stopwatch.jpg' );
+        
         $user_id = get_current_user_id();
         
-        $post_data = [
-		'post_author' => $user_id,
-		'post_title' => 'Имя Фамилия Отчество',
-		'post_status' => 'publish',
-		'post_type' => 'scrm_contact',
-		'comment_status' => 'closed',
-		'ping_status' => 'closed',
-            'meta_input' => [
-                'first-name' => 'Имя',
-                'last-name' => 'Фамилия',
-                'middle-name' => 'Отчество',
-                'phone' => '123456789',
-                'email' => 'client@mail.ru',
-                'birthday' => '1970-01-01',
-                'site' => 'Сайт',
-                'company' => 'Компания',
-                'position' => 'Должность',
-                'facebook' => 'Фейсбук',
-                'vk' => 'Вконтакте',
-                'twitter' => 'Твиттер',
-                'ok' => 'Однокласники',
-                'country' => 'Страна',
-                'city' => 'Город',
-                'street' => 'Улица',
-                'building' => 'Здание',
-                'office' => 'Офис',
-            ],
-	];
-        
-        $contact_id = wp_insert_post( $post_data );
-        
-        $attachment_id = self::create_attachment( 'tortoise.jpg', $contact_id );
+        $contact_id = [];
+        $contact_id[ 1 ] = self::create_contact( $user_id, 1, '+7 123-456-789', 'client@mail.ru' );
+        set_post_thumbnail( $contact_id[ 1 ], $attachment_id[ 'tortoise' ] );
+        $contact_id[ 2 ] = self::create_contact( $user_id, 2, '+1 123-456-789', 'client@gmail.com' );
+        set_post_thumbnail( $contact_id[ 2 ], $attachment_id[ 'tortoise' ] );
+        $contact_id[ 3 ] = self::create_contact( $user_id, 3, '+38 123-456-789', 'client@ukr.net' );
+        set_post_thumbnail( $contact_id[ 3 ], $attachment_id[ 'tortoise' ] );
+        $contact_id[ 4 ] = self::create_contact( $user_id, 4, '+375 123-456-789', 'client@tut.by' );
+        set_post_thumbnail( $contact_id[ 4 ], $attachment_id[ 'tortoise' ] );
+        $contact_id[ 5 ] = self::create_contact( $user_id, 5, '+48 123-456-789', 'client@mail.com' );
+        set_post_thumbnail( $contact_id[ 5 ], $attachment_id[ 'tortoise' ] );
 
-        set_post_thumbnail( $contact_id, $attachment_id );
-
-        $post_data = [
-		'post_author' => $user_id,
-		'post_title' => 'Лид №1',
-		'post_status' => 'publish',
-		'post_type' => 'scrm_lead',
-		'comment_status' => 'closed',
-		'ping_status' => 'closed',
-            'meta_input' => [
-                'status' => '1%',
-                'source' => 'phone',
-                'price' => '1000',
-                'currency' => 'rub',
-                'responsible' => $user_id,
-                'access-for-all' => '1',
-                'about-status' => 'Start working',
-                'about-source' => 'Only phone',
-                'comment' => 'No comments' ,
-                'contact-id' => $contact_id,
-            ],
-	];
-        
-        $lead_id = wp_insert_post( $post_data );
-        
-        $attachment_id = self::create_attachment( 'stopwatch.jpg', $lead_id );
-
-        set_post_thumbnail( $lead_id, $attachment_id );
+        $lead_id = self::create_lead( $user_id, 1, '100%', 'rub', $contact_id[ 1 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 2, '25%', 'usd', $contact_id[ 2 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 3, '1%', 'uah', $contact_id[ 3 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 4, '50%', 'rub', $contact_id[ 4 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 5, '75%', 'usd', $contact_id[ 2 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 6, '0%', 'euro', $contact_id[ 5 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 7, 'success', 'rub', $contact_id[ 1 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
+        $lead_id = self::create_lead( $user_id, 8, 'failure', 'rub', $contact_id[ 4 ] );
+        set_post_thumbnail( $lead_id, $attachment_id[ 'stopwatch' ] );
     }
     
     /**
      * Create attachment
+     * 
+     * @param string $name
+     * @param int $post_id
+     * 
+     * @return int
      */
-    protected static function create_attachment( $name, $post_id ) {
+    protected static function create_attachment( $name, $post_id = null ) {
         
         $file = SCRM_ABSPATH . 'assets/images/' . $name;
         
@@ -325,7 +303,7 @@ class SCRM_Install
             'post_status'    => 'inherit',
         ];
 
-        $attachment_id = wp_insert_attachment( $attachment, $file_path, $post_id );
+        $attachment_id = wp_insert_attachment( $attachment, $file_path );
 
         require_once ABSPATH . 'wp-admin/includes/image.php';
 
@@ -336,6 +314,91 @@ class SCRM_Install
         return $attachment_id;
     }
 
+    /**
+     * Create contact
+     * 
+     * @param int $user_id
+     * @param int $index
+     * @param string $phone
+     * @param string $email
+     * 
+     * @return int
+     */
+    protected static function create_contact( $user_id, $index, $phone, $email ) {
+        
+        $contact_data = [
+		'post_author' => $user_id,
+		'post_title' => 'Имя Фамилия Отчество ' . $index,
+		'post_status' => 'publish',
+		'post_type' => 'scrm_contact',
+		'comment_status' => 'closed',
+		'ping_status' => 'closed',
+                'meta_input' => [
+                    'first-name' => 'Имя' . $index,
+                    'last-name' => 'Фамилия' . $index,
+                    'middle-name' => 'Отчество' . $index,
+                    'phone' => $phone,
+                    'email' => $email,
+                    'birthday' => '1970-01-01',
+                    'site' => 'Сайт' . $index,
+                    'company' => 'Компания' . $index,
+                    'position' => 'Должность' . $index,
+                    'facebook' => 'Фейсбук' . $index,
+                    'vk' => 'Вконтакте' . $index,
+                    'twitter' => 'Твиттер' . $index,
+                    'ok' => 'Однокласники' . $index,
+                    'country' => 'Страна' . $index,
+                    'city' => 'Город' . $index,
+                    'street' => 'Улица' . $index,
+                    'building' => 'Здание' . $index,
+                    'office' => 'Офис' . $index,
+                ],
+	];
+        
+        $contact_id = wp_insert_post( $contact_data );
+        
+        return $contact_id;
+    }
+    
+    /**
+     * Create lead
+     * 
+     * @param int $user_id
+     * @param int $index
+     * @param string $status
+     * @param string $currency 
+     * @param int $contact_id
+     * 
+     * @return int
+     */
+    protected static function create_lead( $user_id, $index, $status, $currency, $contact_id ) {
+        
+        $lead_data = [
+            'post_author'    => $user_id,
+            'post_title'     => sprintf( 'Лид №%s', $index ),
+            'post_status'    => 'publish',
+            'post_type'      => 'scrm_lead',
+            'comment_status' => 'closed',
+            'ping_status'    => 'closed',
+            'meta_input'     => [
+                'status'         => $status,
+                'source'         => !empty( random_int( 0, 1 ) ) ? 'phone' : 'email',
+                'price'          => random_int( 100, 1000 ),
+                'currency'       => $currency,
+                'responsible'    => $user_id,
+                'access-for-all' => '1',
+                'about-status'   => 'Start working',
+                'about-source'   => 'Only phone',
+                'comment'        => 'No comments',
+                'contact-id'     => $contact_id,
+            ],
+        ];
+
+        $lead_id = wp_insert_post( $lead_data );
+        
+        return $lead_id;
+    }
+    
     /**
      * Show action links on the plugin screen.
      *
