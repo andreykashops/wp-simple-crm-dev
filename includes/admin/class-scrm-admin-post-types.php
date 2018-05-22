@@ -11,6 +11,9 @@ defined('ABSPATH') || exit;
  * Class SCRM_Admin_Post_Types
  *
  * Handles the edit posts views and some functionality on the edit post screen for SCRM post types.
+ * 
+ * @package SCRM
+ * @subpackage Admin
  */
 class SCRM_Admin_Post_Types
 {

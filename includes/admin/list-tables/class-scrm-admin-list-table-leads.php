@@ -11,6 +11,10 @@ if ( !class_exists( 'SCRM_Admin_List_Table', false ) )
 
 /**
  * SCRM_Admin_List_Table_Leads Class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category List Tables
  */
 class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
 
@@ -40,7 +44,6 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
      * Handle any custom filters
      * 
      * @param array $query_vars
-     * 
      * @return array $qurey_vars
      */
     protected function query_filters( $query_vars ) {
@@ -83,6 +86,7 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
         
         return [
             'currency',
+            'order',
             'access-for-all',
         ];
     }
@@ -133,13 +137,17 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
                 </select>
 
                 <?php
-                return;;
+                return;
             case 'source':
                 $list = scrm_list_source();
                 $content = $list[ $meta ];
                 break;
             case 'price':
                 $content = sprintf( '%s <span class="currency">%s</span>', $meta, strtoupper( get_post_meta( $post_id, 'currency', true ) ) );
+                break;
+            case 'payment':
+                $list = scrm_list_payment();
+                $content = $list[ $meta ];
                 break;
             case 'responsible':
                 $user_name = get_user_by( 'id', $meta )->data->display_name;
@@ -154,24 +162,21 @@ class SCRM_Admin_List_Table_Leads extends SCRM_Admin_List_Table {
                 ?>
 
                 <ul>
+                    
                     <li>
                         <?php printf( '%s %s %s', $data[ 'first-name' ][0], $data[ 'last-name' ][0], $data[ 'middle-name' ][0] ); ?>
                     </li>
+                    
+                    <?php $source = get_post_meta( $post_id, 'source', true ); ?>
+                    
+                    <?php if ( $source == 'phone' || $source == 'email' || $source == 'site' ) : ?>
+                    
                     <li>
-                        <?php 
-                        switch ( get_post_meta( $post_id, 'source', true ) ) {
-                            case 'phone':
-                                echo $data[ 'phone' ][0];
-                                break;
-                            case 'email':
-                                echo $data[ 'email' ][0];
-                                break;
-                            case 'other':
-                                echo $data[ 'site' ][0];
-                                break;
-                        }
-                        ?>
+                        <?php echo $data[ $source ][0]; ?>
                     </li>
+                    
+                    <?php endif; ?>
+                    
                 </ul>
                 
                 <?php

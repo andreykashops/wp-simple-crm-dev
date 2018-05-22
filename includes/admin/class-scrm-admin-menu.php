@@ -10,6 +10,10 @@ defined( 'ABSPATH' ) || exit;
  * Class SCRM_Admin_Menu
  *
  * Register SCRM menu pages
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Menu
  */
 class SCRM_Admin_Menu {
 
@@ -53,6 +57,9 @@ class SCRM_Admin_Menu {
 
     /**
      * SCRM settings
+     * 
+     * @global string $current_page
+     * @global string $current_tab
      */
     public function settings_page_init() {
 

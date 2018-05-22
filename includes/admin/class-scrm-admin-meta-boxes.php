@@ -9,11 +9,17 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM_Admin_Meta_Boxes class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Meta Boxes
  */
 class SCRM_Admin_Meta_Boxes {
 
     /**
      * Save meta boxes only once
+     * 
+     * @var bool 
      */
     private static $saved_meta_boxes = false;
 
@@ -43,7 +49,7 @@ class SCRM_Admin_Meta_Boxes {
         add_meta_box( 'scrm-lead', __( 'Lead info', 'scrm' ), 'SCRM_Meta_Box_Lead::output', 'scrm_lead', 'normal', 'high' );
         add_meta_box( 'scrm-lead-contact', __( 'Contact info', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact::output', 'scrm_lead', 'normal', 'high' );
         add_meta_box( 'scrm-lead-contact-image', __( 'Contact image', 'scrm' ), 'SCRM_Meta_Box_Lead_Contact_Image::output', 'scrm_lead', 'side', 'low' );
-        add_meta_box( 'scrm-lead-product', __( 'Order info', 'scrm' ), 'SCRM_Meta_Box_Lead_Order::output', 'scrm_lead', 'side', 'low' );
+        #add_meta_box( 'scrm-lead-order', __( 'Order info', 'scrm' ), 'SCRM_Meta_Box_Lead_Order::output', 'scrm_lead', 'side', 'low' );
         
         // Contact
         add_meta_box( 'scrm-contact', __( 'Contact Info', 'scrm' ), 'SCRM_Meta_Box_Contact::output', 'scrm_contact', 'normal', 'high' );
@@ -51,6 +57,9 @@ class SCRM_Admin_Meta_Boxes {
 
     /**
      * Save meta boxes
+     * 
+     * @param int $post_id 
+     * @param object $post
      */
     public function save_meta_boxes( $post_id, $post ) { 
 

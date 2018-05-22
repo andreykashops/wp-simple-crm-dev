@@ -114,7 +114,6 @@ final class SCRM
         do_action('before_scrm_init');
         $this->carret();
 
-
         // Init action.
         do_action('scrm_init');
     }
@@ -153,7 +152,7 @@ final class SCRM
 
     public function carret()
     {
-// Set up localisation.
+        // Set up localisation.
         $this->load_plugin_textdomain();
 
         $this->post_types = new SCRM_Post_Types();
@@ -181,6 +180,8 @@ final class SCRM
 
     /**
      * Get the plugin url
+     * 
+     * @return string
      */
     public function plugin_url() {
         
@@ -189,6 +190,8 @@ final class SCRM
 
     /**
      * Get the plugin path
+     * 
+     * @return string
      */
     public function plugin_path() {
         

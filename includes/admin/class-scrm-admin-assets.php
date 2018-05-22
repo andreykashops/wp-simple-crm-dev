@@ -9,6 +9,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM Admin Assets Class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Pages
  */
 class SCRM_Admin_Assets {
     

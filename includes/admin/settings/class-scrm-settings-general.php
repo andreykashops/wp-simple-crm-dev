@@ -9,6 +9,10 @@ defined('ABSPATH') || exit;
 
 /**
  * SCRM_Settings_General
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Page
  */
 class SCRM_Settings_General extends SCRM_Settings_Page {
     
@@ -25,6 +29,8 @@ class SCRM_Settings_General extends SCRM_Settings_Page {
 
     /**
      * Get settings array
+     * 
+     * @return array 
      */
     public function get_settings() {
         

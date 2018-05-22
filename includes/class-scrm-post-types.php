@@ -6,6 +6,12 @@
 
 defined('ABSPATH') || exit;
 
+/**
+ * Class SCRM_Post_types
+ * 
+ * @package SCRM
+ * @subpackage Core
+ */
 class SCRM_Post_Types
 {
 
