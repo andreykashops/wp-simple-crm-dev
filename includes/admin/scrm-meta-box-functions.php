@@ -3,11 +3,19 @@
  * Project manager: Andrey Pavluk
  * Created by Roman Hofman
  * Date: 06.04.2018
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Functions
  */
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Meta box block
+ * Output meta box block
+ * 
+ * @param string $prefix
+ * @param int $block
+ * @return int
  */
 function scrm_metabox_block( $prefix, $block ) {
     
@@ -17,7 +25,10 @@ function scrm_metabox_block( $prefix, $block ) {
 }
 
 /**
- * Meta box group
+ * Output meta box group
+ * 
+ * @param string $prefix
+ * @param string $group
  */
 function scrm_metabox_group( $prefix, $group ) {
     
@@ -25,7 +36,14 @@ function scrm_metabox_group( $prefix, $group ) {
 }
 
 /**
- * Output a field box input
+ * Output a field input
+ * 
+ * @param string $prefix
+ * @param string $id
+ * @param string|int $value
+ * @param string $lable
+ * @param string $type
+ * @param string $other
  */
 function scrm_metabox_field_input( $prefix, $id, $value, $lable, $type = 'text', $other = '' ) {
 
@@ -63,9 +81,15 @@ function scrm_metabox_field_input( $prefix, $id, $value, $lable, $type = 'text',
 }
 
 /**
- * Option a field box radio
+ * Option a field radio
+ * 
+ * @param string $prefix
+ * @param strong $id
+ * @param string $lable
+ * @param string|int $value
+ * @param array $values
  */
-function scrm_metabox_field_radio( $prefix, $id, $label, $value, $values ) {
+function scrm_metabox_field_radio( $prefix, $id, $lable, $value, $values ) {
     
     $value = !empty( $value ) ? $value : '0';
     ?>
@@ -75,7 +99,7 @@ function scrm_metabox_field_radio( $prefix, $id, $label, $value, $values ) {
         
         <label for="<?php printf( "%s-%s", $prefix, $id ); ?>">
             
-            <?php _e( $label, 'scrm' ); ?>
+            <?php _e( $lable, 'scrm' ); ?>
             
         </label>
         
@@ -101,13 +125,18 @@ function scrm_metabox_field_radio( $prefix, $id, $label, $value, $values ) {
 }
 
 /**
- * Output a field box textarea
+ * Output a field textarea
+ * 
+ * @param string $prefix
+ * @param string $id
+ * @param string|int $value
+ * @param string $lable
+ * @param string $other
  */
-function scrm_metabox_field_textarea( $prefix, $id, $value, $lable ) {
+function scrm_metabox_field_textarea( $prefix, $id, $value, $lable, $other = '' ) {
 
     $id = esc_attr( $id );
     $value = esc_attr( $value );
-    $data = ''; // placeholder, required and more attributes...
 
     switch ( $id ) {
         case 'comment':
@@ -120,14 +149,14 @@ function scrm_metabox_field_textarea( $prefix, $id, $value, $lable ) {
 
     <p class="<?php echo $prefix; ?>-field <?php echo $prefix; ?>-field-textarea">
 
-        <label for="<?php echo $prefix, '-', $id; ?>">
+        <label for="<?php printf( '%s-%s', $prefix, $id ); ?>">
             <?php _e( $lable, 'scrm' ); ?>
         </label>
 
-        <textarea id="<?php echo $prefix, '-', $id; ?>" 
+        <textarea id="<?php printf( '%s-%s', $prefix, $id ); ?>" 
                   class="<?php echo $prefix; ?>-textarea"
-                  name="<?php echo str_replace( '-', '_', $prefix ), '[', $id, ']'; ?>"
-                  <?php echo $data; ?>><?php echo $value; ?></textarea>
+                  name="<?php printf( '%s[%s]', str_replace( '-', '_', $prefix ), $id ); ?>"
+                  <?php echo $other; ?>><?php echo $value; ?></textarea>
 
     </p>
 
@@ -135,7 +164,14 @@ function scrm_metabox_field_textarea( $prefix, $id, $value, $lable ) {
 }
 
 /**
- * Output a field box select
+ * Output a field select
+ * 
+ * @param string $prefix
+ * @param string $id
+ * @param string|int $value
+ * @param string $lable
+ * @param array $items
+ * @param bool $indexed
  */
 function scrm_metabox_field_select( $prefix, $id, $value, $lable, $items, $indexed = true ) {
     
@@ -146,13 +182,13 @@ function scrm_metabox_field_select( $prefix, $id, $value, $lable, $items, $index
     <p id="<?php echo $prefix; ?>-field-<?php echo $id; ?>" 
        class="<?php echo $prefix; ?>-field <?php echo $prefix; ?>-field-select">
 
-        <label for="<?php echo $prefix, '-', $id; ?>">
+        <label for="<?php printf( '%s-%s', $prefix, $id ); ?>">
             <?php _e( $lable, 'scrm' ); ?>
         </label>
 
-        <select id="<?php echo $prefix, '-', $id; ?>" 
+        <select id="<?php printf( '%s-%s', $prefix, $id ); ?>" 
                 class="<?php echo $prefix; ?>-select" 
-                name="<?php echo str_replace( '-', '_', $prefix ), '[', $id, ']'; ?>">
+                name="<?php printf( '%s[%s]', str_replace( '-', '_', $prefix ), $id ); ?>">
 
             <?php
             if ( $indexed ) {
@@ -189,6 +225,9 @@ function scrm_metabox_field_select( $prefix, $id, $value, $lable, $items, $index
 
 /**
  * Output thumbnail meta-box
+ * 
+ * @param string $prefix
+ * @param int $post_id
  */
 function scrm_metabox_field_thumbnail( $prefix, $post_id ) {
     
@@ -240,6 +279,12 @@ function scrm_metabox_field_thumbnail( $prefix, $post_id ) {
 
 /**
  * Metabox fields load
+ * 
+ * @param int $post_id
+ * @param string $class
+ * @param int $block
+ * @param array $hide
+ * @return int 
  */
 function scrm_metabox_fields_load( $post_id, $class, $block = 1, $hide = [] ) {
             
@@ -277,6 +322,10 @@ function scrm_metabox_fields_load( $post_id, $class, $block = 1, $hide = [] ) {
 
 /**
  * Metabox fields save
+ * 
+ * @param int $post_id
+ * @param string $class
+ * @param array $meta
  */
 function scrm_metabox_fields_save( $post_id, $class, $meta ) {
     
@@ -295,11 +344,14 @@ function scrm_metabox_fields_save( $post_id, $class, $meta ) {
 
 /**
  * Metabox custom fields load
+ * 
+ * @param int $post_id
+ * @param string $prefix
+ * @param int $block
+ * @return int
  */
 function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
 
-    #$meta = get_post_meta( $post_id, $prefix, true );
-    
     $option = get_option( str_replace( '_', '_settings_', $prefix ) );
     
     $prefix = scrm_prefix( $prefix );
@@ -315,7 +367,7 @@ function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
 
                     <?php
                     foreach ( $fields as $field ) {
-
+                        
                         if ( isset( $field[ 'show' ] ) ) {
 
                             $label = $field[ 'label' ];
@@ -384,10 +436,34 @@ function scrm_metabox_custom_fields_load( $post_id, $prefix, $block = 1 ) {
 
 /**
  * Metabox custom fields save
- */
-function scrm_metabox_custom_fields_save( $post_id, $meta ) {
+ * 
+ * @param int $post_id
+ * @param array $meta
+ * @param string $type 
+*/
+function scrm_metabox_custom_fields_save( $post_id, $meta, $type ) {
     
-    foreach ( $meta as $key => $value ) 
-        update_post_meta( $post_id, $key, sanitize_text_field( $value ) );
+    $options = get_option( str_replace( '_', '_settings_', $type ) );
     
+    $types = [];
+    
+    foreach ( $options[ $type ] as $option )
+        $types[ $option[ 'name' ] ] = $option[ 'type' ];
+    
+    $types[ 'contact-id' ] = 'select';
+    $types[ 'thumbnail-id' ] = 'text';
+    
+    foreach ( $meta as $key => $value ) {
+        
+        switch ( $types[ $key ] ) {
+            case 'textarea':
+                $value = sanitize_textarea_field( $value );
+                break;
+            default :
+                $value = sanitize_text_field( $value );
+                break;
+        }
+        
+        update_post_meta( $post_id, $key, $value );
+    }
 }

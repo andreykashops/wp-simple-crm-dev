@@ -8,16 +8,24 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM_Meta_Box_Lead_Contact Class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Meta Boxes
  */
 class SCRM_Meta_Box_Lead_Contact {
     
     /**
      * Type
+     * 
+     * @var string 
      */
     public static $type = 'scrm_lead';
 
     /**
      *  Get metabox fields
+     * 
+     * @return array 
      */
     public static function fields() {
 
@@ -32,6 +40,9 @@ class SCRM_Meta_Box_Lead_Contact {
     
     /**
      * Lead values
+     * 
+     * @param int $id 
+     * @return array 
      */
     public static function values( $id ) {
         
@@ -48,18 +59,25 @@ class SCRM_Meta_Box_Lead_Contact {
     
     /**
      * Router field boxes
+     * 
+     * @param string $prefix 
+     * @param string $id 
+     * @param string|int $value 
+     * @param string $label 
      */
-    public static function metabox( $prefix, $id, $value, $lable ) {
+    public static function metabox( $prefix, $id, $value, $label ) {
 
         switch ( $id ) {
             case 'contact-id':
-                scrm_metabox_field_select( $prefix, $id, $value, $lable, self::values( $id ), false );
+                scrm_metabox_field_select( $prefix, $id, $value, $label, self::values( $id ), false );
                 break;
         }
     }
     
     /**
      * Output the metabox
+     * 
+     * @param object $post 
      */
     public static function output( $post ) {
 
@@ -74,6 +92,8 @@ class SCRM_Meta_Box_Lead_Contact {
 
     /**
      * Save meta box data
+     * 
+     * @param int $post_id 
      */
     public static function save( $post_id ) {
         
@@ -97,9 +117,9 @@ class SCRM_Meta_Box_Lead_Contact {
             
             $lead[ 'contact-id' ] = wp_insert_post( $args );
             
-            scrm_metabox_custom_fields_save( $post_id, $lead );
+            scrm_metabox_custom_fields_save( $post_id, $lead, self::$type );
         } 
         
-        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], $contact );
+        scrm_metabox_custom_fields_save( $lead[ 'contact-id' ], $contact, SCRM_Meta_Box_Contact::$type );
     }
 }

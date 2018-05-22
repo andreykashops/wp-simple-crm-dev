@@ -9,21 +9,30 @@ defined('ABSPATH') || exit;
 
 /**
  * Class SCRM_Admin_Settings_Page
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Pages
  */
 class SCRM_Admin_Settings_Page
 {
     /**
      * 
+     * @var bool 
      */
     private static $saved = false;
     
     /**
      * Setting pages
+     * 
+     * @var array 
      */
     private static $settings = [];
 
     /**
      * Include the settings page classes.
+     * 
+     * @return array 
      */
     public static function settings_pages() {
         
@@ -34,7 +43,7 @@ class SCRM_Admin_Settings_Page
         $settings[] = include( 'settings/class-scrm-settings-general.php' );
         $settings[] = include( 'settings/class-scrm-settings-lead.php' );
         $settings[] = include( 'settings/class-scrm-settings-contact.php' );
-        $settings[] = include( 'settings/class-scrm-settings-order.php' );
+        #$settings[] = include( 'settings/class-scrm-settings-order.php' );
         
         self::$settings = apply_filters( 'scrm_get_settings_pages', $settings );
         
@@ -43,6 +52,8 @@ class SCRM_Admin_Settings_Page
     
     /**
      * Save the settings.
+     * 
+     * @global string $current_tab
      */
     public static function save() {
         
@@ -53,6 +64,8 @@ class SCRM_Admin_Settings_Page
 
     /**
      * Generate and output settings page
+     * 
+     * @global string $current_tab
      */
     public static function output(){
         
@@ -101,6 +114,10 @@ class SCRM_Admin_Settings_Page
     
     /**
      * Get prefix
+     * 
+     * @global string $current_page
+     * @global string $current_tab
+     * @return string 
      */
     public static function get_prefix() {
         
@@ -113,6 +130,8 @@ class SCRM_Admin_Settings_Page
     
     /**
      * Output admin fields
+     * 
+     * @param array $options
      */
     public static function load_fields( $options ) {
         
@@ -159,6 +178,9 @@ class SCRM_Admin_Settings_Page
 
     /**
      * Save admin fields
+     * 
+     * @param array $options
+     * @return bool 
      */
     public static function save_fields( $options ) {
         
@@ -200,13 +222,12 @@ class SCRM_Admin_Settings_Page
                                 case 'label':
                                 case 'name':
                                 case 'type':
-                                case 'value':
                                 case 'placeholder':
                                     $value = sanitize_text_field( $value );
                                     break;
+                                case 'value':
                                 case 'values':
-                                    $value = sanitize_textarea_field( $value );
-                                    break;
+                                    continue;
                                 default :
                                     $value = sanitize_key( $value );
                                     break;
@@ -215,17 +236,36 @@ class SCRM_Admin_Settings_Page
                             $data[ $id ][ sprintf( '_%s', $index ) ][ $key ] = $value;
                         }
                     }
+                    
                     $i = 0;
-                    foreach ( $data[ $id ] as $key => $value ) {
+                    
+                    foreach ( $data[ $id ] as $key => $field ) {
                         
-                        $type = $value[ 'type' ];
+                        switch ( $field[ 'type' ] ) {
+                            case 'text':
+                                $field[ 'value' ] = sanitize_text_field( $field[ 'value' ] );
+                                break;
+                            case 'textarea':
+                                $field[ 'value' ] = sanitize_textarea_field( $field[ 'value' ] );
+                                break;
+                            case 'select':
+                            case 'users':
+                                $field[ 'value' ] = sanitize_text_field( $field[ 'value' ] );
+                                $field[ 'values' ] = sanitize_textarea_field( $field[ 'values' ] );
+                                break;
+                            default:
+                                $field[ 'value' ] = sanitize_key( $field[ 'value' ] );
+                                break;
+                        }
+                        
+                        $type = $field[ 'type' ];
                         
                         if ( $type == 'select' || $type == 'radio' ) {
                             
-                            $value[ 'values' ] = json_decode( '{"' . str_replace( [ "\r\n", ":" ], [ '","', '":"' ] , $value[ 'values' ] ) . '"}', true );
+                            $field[ 'values' ] = json_decode( '{"' . str_replace( [ "\r\n", ":" ], [ '","', '":"' ] , $field[ 'values' ] ) . '"}', true );
                         }
 
-                        $data[ $id ][ $i ] = $value;
+                        $data[ $id ][ $i ] = $field;
                         ++$i;
                         unset( $data[ $id ][ $key ] );
                     }

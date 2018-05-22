@@ -9,16 +9,24 @@ defined('ABSPATH') || exit;
 
 /**
  * SCRM_Settings_Page
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Pages
  */
 abstract class SCRM_Settings_Page {
     
     /**
      * Setting page id
+     * 
+     * @var string
      */
     public $id = '';
 
     /**
      * Setting page label
+     * 
+     * @var string
      */
     protected $label = '';
 
@@ -34,6 +42,9 @@ abstract class SCRM_Settings_Page {
     
     /**
      * Add this page to settings
+     * 
+     * @param array $pages 
+     * @return array 
      */
     public function add_settings_page( $pages ) {
         

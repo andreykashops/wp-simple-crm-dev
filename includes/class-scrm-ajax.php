@@ -9,6 +9,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM AJAX Class
+ * 
+ * @package SCRM
+ * @subpackage Core
  */
 class SCRM_AJAX {
 
@@ -56,7 +59,6 @@ class SCRM_AJAX {
         $post_id = sanitize_key( $_POST[ 'post_id' ] );
 
         scrm_metabox_custom_fields_load( $post_id, SCRM_Meta_Box_Contact::$type );
-        #scrm_get_meta_boxes( $post_id, 'SCRM_Meta_Box_Contact' );
 
         wp_die();
     }

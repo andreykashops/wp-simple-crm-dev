@@ -8,11 +8,17 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class SCRM_Admin_Main_Page
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Pages
  */
 class SCRM_Admin_Main_Page {
 
     /**
      * Init
+     * 
+     * @global object $scrm_multi_list_table
      */
     public static function init() {
 
@@ -22,10 +28,13 @@ class SCRM_Admin_Main_Page {
         $scrm_multi_list_table = new SCRM_Multi_List_Table();
 
         add_filter( 'screen_options_show_screen', '__return_false', 100, 1 );
+        add_action( 'user_admin_notices', 'control_panel', 1 );
     }
 
     /**
-     * Generate control columns items
+     * Output control columns items
+     * 
+     * @param array $items
      */
     protected static function control_columns_item( $items ) {
         
@@ -47,12 +56,14 @@ class SCRM_Admin_Main_Page {
                 </button>
             </li>
             
-        <?php
+            <?php
         endforeach;
     }
 
     /**
-     * Generate and output leads page
+     * Output leads page
+     * 
+     * @global object $scrm_multi_list_table
      */
     public static function output() {
 

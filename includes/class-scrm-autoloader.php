@@ -9,11 +9,16 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM_Autoloader class
+ * 
+ * @package SCRM
+ * @subpackage Core
  */
 class SCRM_Autoloader {
 
     /**
      * Path to the includes directory
+     * 
+     * @var string 
      */
     private $include_path = '';
     
@@ -22,9 +27,8 @@ class SCRM_Autoloader {
      */
     public function __construct() {
         
-        if ( function_exists( "__autoload" ) ) {
+        if ( function_exists( "__autoload" ) ) 
             spl_autoload_register( "__autoload" );
-        }
 
         spl_autoload_register( [ $this, 'autoload' ] );
 
@@ -33,6 +37,9 @@ class SCRM_Autoloader {
     
     /**
      * Take a class name and turn it into a file name
+     * 
+     * @param string $class 
+     * @return string 
      */
     private function get_file_name_from_class( $class ) {
         
@@ -41,6 +48,9 @@ class SCRM_Autoloader {
     
     /**
      * Include a class file
+     * 
+     * @param string $path 
+     * @return bool 
      */
     private function load_file( $path ) {
         
@@ -53,26 +63,24 @@ class SCRM_Autoloader {
 
     /**
      * Auto-load SCRM classes on demand to reduce memory consumption
+     * 
+     * @param string $class 
      */
     public function autoload( $class ) {
         
         $class = strtolower( $class );
 
-        if ( 0 !== strpos( $class, 'scrm_' ) ) {
+        if ( 0 !== strpos( $class, 'scrm_' ) ) 
             return;
-        }
 
         $file = $this->get_file_name_from_class( $class );
         $path = '';
 
-        if ( 0 === strpos( $class, 'scrm_meta_box' ) ) {
-            
+        if ( 0 === strpos( $class, 'scrm_meta_box' ) ) 
             $path = $this->include_path . 'admin/meta-boxes/';
-        }
 
-        if ( empty( $path ) || !$this->load_file( $path . $file ) ) {
+        if ( empty( $path ) || !$this->load_file( $path . $file ) ) 
             $this->load_file( $this->include_path . $file );
-        }
     }
 }
 

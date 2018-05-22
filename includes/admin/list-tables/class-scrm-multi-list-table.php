@@ -8,6 +8,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class to displaying multi list table
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category List Tables
  */
 class SCRM_Multi_List_Table extends WP_List_Table {
 

@@ -9,6 +9,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * SCRM_Settings_Lead
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category Page
  */
 class SCRM_Settings_Lead extends SCRM_Settings_Page {
 
@@ -25,6 +29,8 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
 
     /**
      * Get settings array
+     * 
+     * @return array 
      */
     public function get_settings() {
 
@@ -82,6 +88,27 @@ class SCRM_Settings_Lead extends SCRM_Settings_Page {
                         'type'     => 'select',
                         'value'    => 'usd',
                         'values'   => scrm_list_currency(),
+                        'required' => '0',
+                        'sorted'   => '0',
+                        'show'     => '1',
+                        'built-in' => true,
+                    ],
+                    [
+                        'label'    => 'Payment',
+                        'name'     => 'payment',
+                        'type'     => 'select',
+                        'value'    => 'cach',
+                        'values'   => scrm_list_payment(),
+                        'required' => '0',
+                        'sorted'   => '0',
+                        'show'     => '1',
+                        'built-in' => true,
+                    ],
+                    [
+                        'label'    => 'Order',
+                        'name'     => 'order',
+                        'type'     => 'textarea',
+                        'value'    => '',
                         'required' => '0',
                         'sorted'   => '0',
                         'show'     => '1',

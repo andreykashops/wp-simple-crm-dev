@@ -11,16 +11,24 @@ if ( !class_exists( 'SCRM_Admin_List_Table', false ) )
 
 /**
  * SCRM_Admin_List_Table_Contacts Class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category List Tables
  */
 class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
 
     /**
      * Post type
+     * 
+     * @var string
      */
     protected $list_table_type = 'scrm_contact';
 
     /**
      * Table columns
+     * 
+     * @var array
      */
     protected $list_table_columns = [];
     
@@ -34,6 +42,9 @@ class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
 
     /**
      * Handle any custom filters
+     * 
+     * @param array $query_vars
+     * @return array 
      */
     protected function query_filters( $query_vars ) {
         
@@ -66,6 +77,8 @@ class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
 
     /**
      * Define ignored columns
+     * 
+     * @return array
      */
     protected function define_ignored_columns() {
         
@@ -78,16 +91,18 @@ class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
 
     /**
      * Define hidden columns
+     * 
+     * @return array
      */
     protected function define_hidden_columns() {
         
         return [
-            'site',
+            'company',
             'position',
-            'facebook',
             'vk',
             'twitter',
             'ok',
+            'country',
             'city',
             'street',
             'building',
@@ -99,6 +114,9 @@ class SCRM_Admin_List_Table_Contacts extends SCRM_Admin_List_Table {
     
     /**
      * Render column
+     * 
+     * @param string $column
+     * @param int $post_id
      */
     protected function render_column( $column, $post_id ) {
         

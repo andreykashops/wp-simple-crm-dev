@@ -12,21 +12,31 @@ if ( class_exists( 'SCRM_Admin_List_Table', false ) )
 
 /**
  * SCRM_Admin_List_Table Class
+ * 
+ * @package SCRM
+ * @subpackage Admin
+ * @category List Tables
  */
 abstract class SCRM_Admin_List_Table {
 
     /**
      * Post type
+     * 
+     * @var string 
      */
     protected $list_table_type = '';
     
     /**
      * Table columns
+     * 
+     * @var array
      */
     protected $list_table_columns = [];
 
     /**
      * Object being shown on the row
+     * 
+     * @var object
      */
     protected $object = null;
 
@@ -74,6 +84,9 @@ abstract class SCRM_Admin_List_Table {
     
     /**
      * Remove support "View Mode" switching
+     * 
+     * @param array $post_types 
+     * @return array 
      */
     public function disable_view_mode( $post_types ) {
         
@@ -84,6 +97,10 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Handle any filters
+     * 
+     * @global string $typenow
+     * @param array $query_vars 
+     * @return array 
      */
     public function request_query( $query_vars ) {
         
@@ -97,6 +114,10 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Set row actions
+     * 
+     * @param array $actions 
+     * @param object $post
+     * @return array 
      */
     public function row_actions( $actions, $post ) {
 
@@ -107,6 +128,10 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Adjust which columns are displayed by default
+     * 
+     * @param array $hidden 
+     * @param object $screen 
+     * @return array 
      */
     public function default_hidden_columns( $hidden, $screen ) {
         
@@ -118,6 +143,9 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Define which columns are sortable
+     * 
+     * @param array $columns 
+     * @return array 
      */
     public function define_sortable_columns( $columns ) {
 
@@ -139,6 +167,9 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Define which columns to show on this screen
+     * 
+     * @param array $columns 
+     * @return array 
      */
     public function define_columns( $columns ) {
 
@@ -155,6 +186,9 @@ abstract class SCRM_Admin_List_Table {
 
     /**
      * Render individual columns
+     * 
+     * @param string $column 
+     * @param int $post_id 
      */
     public function render_columns( $column, $post_id ) {
         
@@ -164,6 +198,9 @@ abstract class SCRM_Admin_List_Table {
     
     /**
      * Get image
+     * 
+     * @param int $post_id 
+     * @return string 
      */
     protected function get_image( $post_id ) {
         

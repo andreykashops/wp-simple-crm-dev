@@ -118,6 +118,14 @@
     padding: 5px;
     font-style: italic;
 }
+.scrm-fields-table .type-built-in {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 2px 3px;
+    width: 84%;
+    border: 1px #ddd solid;
+    background-color: #eee;
+}
 table.scrm-fields-table p.field-required input,
 table.scrm-fields-table p.field-sorted input {
     width: 20px;
